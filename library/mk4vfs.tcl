@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.19 2003/02/01 22:46:33 jcw Exp $
+# $Id: mk4vfs.tcl,v 1.20 2003/02/02 00:50:24 jcw Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -310,7 +310,7 @@ namespace eval mk4vfs {
 	tclLog "umount $local? [mk::file open]"
     }
 
-    proc _umount {db} {
+    proc _umount {db args} {
 	after cancel [list mk4vfs::periodicCommit $db]
 	array unset v::mode $db
 	array unset v::timer $db
