@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.34 2003/02/21 17:00:54 vincentdarley Exp $
+# $Id: mk4vfs.tcl,v 1.35 2003/03/17 10:01:59 jcw Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -13,9 +13,10 @@
 # 20jan03 jcw	1.7	streamed zlib decompress mode, reduces memory usage
 # 01feb03 jcw	1.8	fix mounting a symlink, cleanup mount/unmount procs
 # 04feb03 jcw	1.8	whoops, restored vfs::mk4::Unmount logic
+# 17mar03 jcw	1.9	start with mode translucent or readwrite
 
-package provide mk4vfs 1.8
-package provide vfs::mk4 1.8
+package provide mk4vfs 1.9
+package provide vfs::mk4 1.9
 package require Mk4tcl
 package require vfs
 
@@ -340,16 +341,17 @@ namespace eval mk4vfs {
 	    
 	    init $db
 	    
-	    set v::mode($db) "readwrite"
-	    for {set idx 0} {$idx < [llength $args]} {incr idx} {
-		switch -- [lindex $args $idx] {
-		    -readonly   { set v::mode($db) "readonly" }
-		    -nocommit   { set v::mode($db) "translucent" }
+	    set mode 0
+	    foreach arg $args {
+		switch -- $arg {
+		    -readonly   { set mode 1 }
+		    -nocommit   { set mode 2 }
 		}
 	    }
-	    if {$v::mode($db) == "readwrite"} {
+	    if {$mode == 0} {
 		periodicCommit $db
 	    }
+	    set v::mode($db) [lindex {translucent readwrite readwrite} $mode]
 	}
 	return $db
     }
