@@ -11,7 +11,7 @@
 # See the file "license.terms" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# RCS: @(#) $Id: Makefile.in,v 1.17 2004/11/22 18:55:40 andreas_kupries Exp $
+# RCS: @(#) $Id: Makefile.in,v 1.18 2005/01/25 00:58:51 hobbs Exp $
 
 #========================================================================
 # Edit the following few lines when writing a new extension
@@ -133,9 +133,9 @@ SHARED_BUILD	= @SHARED_BUILD@
 
 INCLUDES	= @PKG_INCLUDES@ @TCL_INCLUDES@
 
-EXTRA_CFLAGS	= @EXTRA_CFLAGS@ @PKG_CFLAGS@
+PKG_CFLAGS	= @PKG_CFLAGS@
 
-DEFS		= @DEFS@ $(EXTRA_CFLAGS)
+DEFS		= @DEFS@ $(PKG_CFLAGS)
 
 CONFIG_CLEAN_FILES = Makefile
 
