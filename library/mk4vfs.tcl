@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.37 2003/09/01 15:03:57 vincentdarley Exp $
+# $Id: mk4vfs.tcl,v 1.38 2005/01/20 22:35:28 jcw Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -363,6 +363,7 @@ namespace eval mk4vfs {
 	variable flush
 	set v::timer($db) [after $flush [list ::mk4vfs::periodicCommit $db]]
 	mk::file commit $db
+	return ;# 2005-01-20 avoid returning a value
     }
 
     proc _umount {db args} {
