@@ -2,7 +2,7 @@
 # Copyright (C) 1997-1999 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Header: /home/rkeene/tmp/cvs2fossil/tclvfs/tclvfs/library/mk4vfs.tcl,v 1.8 2001/11/02 12:39:19 vincentdarley Exp $
+# $Header: /home/rkeene/tmp/cvs2fossil/tclvfs/tclvfs/library/mk4vfs.tcl,v 1.9 2002/02/18 13:01:38 vincentdarley Exp $
 #
 
 ###############################################################################
@@ -146,9 +146,14 @@ proc vfs::mk4::utime {db path actime modtime} {
 
 proc vfs::mk4::matchindirectory {db path actualpath pattern type} {
     #::vfs::log [list matchindirectory $path $actualpath $pattern $type]
-    set res [::mk4vfs::getdir $db $path $pattern]
-    #::vfs::log "got $res"
     set newres [list]
+    if {![string length $pattern]} {
+	# check single file
+	set res [list $path]
+    } else {
+	set res [::mk4vfs::getdir $db $path $pattern]
+    }
+    #::vfs::log "got $res"
     foreach p [::vfs::matchCorrectTypes $type $res $actualpath] {
 	lappend newres "$actualpath$p"
     }
