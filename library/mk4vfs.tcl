@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.32 2003/02/20 23:07:10 andreas_kupries Exp $
+# $Id: mk4vfs.tcl,v 1.33 2003/02/21 16:05:43 vincentdarley Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -383,8 +383,7 @@ namespace eval mk4vfs {
 	    } else {
 		set row [mk::select $view -count 1 parent $parent name $ele]
 		if { $row == "" } {
-		    return -code error "could not read \"$path\":\
-			    no such file or directory"
+		    vfs::filesystem posixerror $::vfs::posix(ENOENT)
 		}
 		set v::cache($db,$parent,$ele) $row
 		set parent $row
@@ -426,8 +425,7 @@ namespace eval mk4vfs {
 		if { $row != "" } {
 		    set v::cache($db,$parent,$tail) $row
 		} else { 
-		    return -code error "could not read \"$path\":\
-			    no such file or directory"
+		    vfs::filesystem posixerror $::vfs::posix(ENOENT)
 		}
 	    }
 	}
@@ -512,13 +510,15 @@ namespace eval mk4vfs {
 	set view $db.dirs
 
 	set npath {}
+	# This actually does more work than is needed. Tcl's
+	# vfs only requires us to create the last piece, and
+	# Tcl already knows it is not a file.
 	foreach ele $sp {
 	    set npath [file join $npath $ele]
 
-	    if { ![catch {stat $db $npath sb}] } {
+	    if {![catch {stat $db $npath sb}] } {
 		if { $sb(type) != "directory" } {
-		    return -code error "can't create directory \"$npath\":\
-			    file already exists"
+		    vfs::filesystem posixerror $::vfs::posix(EROFS)
 		}
 		set parent [mk::cursor position sb(ino)]
 		continue
@@ -584,7 +584,7 @@ namespace eval mk4vfs {
 		}
 	    } else {
 		if {[llength $contents]} {
-		    return -code error "Non-empty"
+		    vfs::filesystem posixerror $::vfs::posix(ENOTEMPTY)
 		}
 	    }
 	    array unset v::cache \

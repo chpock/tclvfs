@@ -1,6 +1,6 @@
 # vfsUtils.tcl --
 #
-# $Id: vfsUtils.tcl,v 1.24 2003/02/19 11:15:51 vincentdarley Exp $
+# $Id: vfsUtils.tcl,v 1.25 2003/02/21 16:05:43 vincentdarley Exp $
 
 package require Tcl 8.4
 package require vfs
@@ -361,7 +361,7 @@ set vfs::posix(ESRCH)		3	;# No such process
 set vfs::posix(EINTR)		4	;# Interrupted system call
 set vfs::posix(EIO)		5	;# Input/output error
 set vfs::posix(ENXIO)		6	;# Device not configured
-set vfs::posix(E)2BIG		7	;# Argument list too long
+set vfs::posix(E2BIG)		7	;# Argument list too long
 set vfs::posix(ENOEXEC)		8	;# Exec format error
 set vfs::posix(EBADF)		9	;# Bad file descriptor
 set vfs::posix(ECHILD)		10	;# No child processes
