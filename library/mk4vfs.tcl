@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.24 2003/02/17 11:55:21 vincentdarley Exp $
+# $Id: mk4vfs.tcl,v 1.25 2003/02/17 17:31:59 vincentdarley Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -56,8 +56,18 @@ namespace eval vfs::mk4 {
 	::mk4vfs::_umount $db
     }
 
-    proc state {} {
-	return "translucent"
+    proc state {db args} {
+	switch -- [llength $args] {
+	    0 {
+		return "translucent"
+	    }
+	    1 {
+		return -code error "Can't set state yet"
+	    }
+	    default {
+		return -code error "Wrong num args"
+	    }
+	}
     }
     
     proc handler {db cmd root relative actualpath args} {
