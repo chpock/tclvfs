@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.29 2003/02/19 10:51:58 vincentdarley Exp $
+# $Id: mk4vfs.tcl,v 1.30 2003/02/19 11:15:51 vincentdarley Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -56,6 +56,34 @@ namespace eval vfs::mk4 {
 	::mk4vfs::_umount $db
     }
 
+    proc attributes {db} { return [list "state" "commit"] }
+    
+    # Can use this to control commit/nocommit or whatever.
+    # I'm not sure yet of what functionality jcw needs.
+    proc commit {db args} {
+	switch -- [llength $args] {
+	    0 {
+		if {$::mk4vfs::v::mode($db) == "readonly"} {
+		    return 0
+		} else {
+		    # To Do: read the commit state
+		    return 1
+		}
+	    }
+	    1 {
+		set val [lindex $args 0]
+		if {$val != 0 && $val != 1} {
+		    return -code error \
+		      "invalid commit value $val, must be 0,1"
+		}
+		# To Do: set the commit state.
+	    }
+	    default {
+		return -code error "Wrong num args"
+	    }
+	}
+    }
+    
     proc state {db args} {
 	switch -- [llength $args] {
 	    0 {
