@@ -2,7 +2,7 @@
 # Copyright (C) 1997-1999 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Header: /home/rkeene/tmp/cvs2fossil/tclvfs/tclvfs/library/mk4vfs.tcl,v 1.7 2001/09/27 18:56:34 vincentdarley Exp $
+# $Header: /home/rkeene/tmp/cvs2fossil/tclvfs/tclvfs/library/mk4vfs.tcl,v 1.8 2001/11/02 12:39:19 vincentdarley Exp $
 #
 
 ###############################################################################
@@ -100,6 +100,10 @@
 	}
         
 ###############################################################################
+
+package require Mk4tcl
+package require vfs
+package require vfslib
 
 namespace eval vfs::mk4 {}
 
@@ -330,10 +334,6 @@ proc vfs::mk4::fileattributes {db root relative args} {
 	}
     }
 }
-
-package require Mk4tcl
-package require vfs
-package require vfslib
 
 package provide mk4vfs 1.0
 
