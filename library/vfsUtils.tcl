@@ -1,6 +1,6 @@
 # vfsUtils.tcl --
 #
-# $Id: vfsUtils.tcl,v 1.22 2003/02/17 17:32:00 vincentdarley Exp $
+# $Id: vfsUtils.tcl,v 1.23 2003/02/18 16:08:40 vincentdarley Exp $
 
 package require Tcl 8.4
 package require vfs
@@ -57,6 +57,10 @@ proc ::vfs::unmount {mountpoint} {
     set norm [file normalize $mountpoint]
     uplevel \#0 $_unmountCmd($norm) [list $norm]
     unset _unmountCmd($norm)
+}
+
+proc vfs::states {} {
+    return [list "readwrite" "translucent" "readonly"]
 }
 
 # vfs::attributes mountpoint ?-opt val? ?...-opt val?
