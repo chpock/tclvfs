@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.22 2003/02/08 15:08:17 vincentdarley Exp $
+# $Id: mk4vfs.tcl,v 1.23 2003/02/09 17:25:57 jcw Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -12,6 +12,7 @@
 # 16oct02 jcw	1.6	fixed periodic commit once a change is made
 # 20jan03 jcw	1.7	streamed zlib decompress mode, reduces memory usage
 # 01feb03 jcw	1.8	fix mounting a symlink, cleanup mount/unmount procs
+# 04feb03 jcw	1.8	whoops, restored vfs::mk4::Unmount logic
 
 package provide mk4vfs 1.8
 package provide vfs::mk4 1.8
