@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.33 2003/02/21 16:05:43 vincentdarley Exp $
+# $Id: mk4vfs.tcl,v 1.34 2003/02/21 17:00:54 vincentdarley Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -361,7 +361,7 @@ namespace eval mk4vfs {
     }
 
     proc _umount {db args} {
-	after cancel $v::timer($db)
+	catch {after cancel $v::timer($db)}
 	array unset v::mode $db
 	array unset v::timer $db
 	array unset v::cache $db,*
