@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2002 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.17 2002/12/24 11:12:56 vincentdarley Exp $
+# $Id: mk4vfs.tcl,v 1.18 2003/01/28 12:38:59 vincentdarley Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -12,6 +12,7 @@
 # 16oct02 jcw	1.6	fixed periodic commit once a change is made
 
 package provide mk4vfs 1.6
+package provide vfs::mk4 1.6
 package require Mk4tcl
 package require vfs
 
@@ -45,7 +46,8 @@ namespace eval vfs::mk4 {
     }
 
     proc handler {db cmd root relative actualpath args} {
-	#puts stderr "handler: $db - $cmd - $root - $relative - $actualpath - $args"
+	#puts stderr "handler: $db - $cmd - $root - $relative\
+	#- $actualpath - $args"
 	if {$cmd == "matchindirectory"} {
 	    eval [list $cmd $db $relative $actualpath] $args
 	} elseif {$cmd == "fileattributes"} {
@@ -288,7 +290,7 @@ namespace eval mk4vfs {
     proc umount {local} {
 	foreach {db path} [mk::file open] {
 	    if {[string equal $local $path]} {
-		uplevel ::vfs::mk4::Unmount $db $local
+		uplevel 1 [list ::vfs::mk4::Unmount $db $local]
 		return
 	    }
 	}
