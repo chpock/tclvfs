@@ -11,7 +11,7 @@
 # See the file "license.terms" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# RCS: @(#) $Id: Makefile.in,v 1.4 2002/04/03 08:44:30 vincentdarley Exp $
+# RCS: @(#) $Id: Makefile.in,v 1.5 2002/04/09 08:50:25 vincentdarley Exp $
 
 #========================================================================
 # Edit the following few lines when writing a new extension
@@ -293,7 +293,7 @@ $(vfs_LIB_FILE): $(vfs_OBJECTS)
 #========================================================================
 
 generic/vfs.$(OBJEXT): $(srcdir)/generic/vfs.c
-       $(COMPILE) -c `@CYGPATH@ $(srcdir)/generic/vfs.c` -o $@
+	$(COMPILE) -c `@CYGPATH@ $(srcdir)/generic/vfs.c` -o $@
 
 #========================================================================
 # End of user-definable section
