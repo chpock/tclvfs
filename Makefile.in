@@ -11,7 +11,7 @@
 # See the file "license.terms" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# RCS: @(#) $Id: Makefile.in,v 1.18 2005/01/25 00:58:51 hobbs Exp $
+# RCS: @(#) $Id: Makefile.in,v 1.19 2005/03/19 01:43:47 hobbs Exp $
 
 #========================================================================
 # Edit the following few lines when writing a new extension
@@ -141,7 +141,7 @@ CONFIG_CLEAN_FILES = Makefile
 
 CPPFLAGS	= @CPPFLAGS@
 LIBS		= @PKG_LIBS@ @LIBS@
-AR		= ar
+AR		= @AR@
 ## need to include the tcl source dir here for tclPort.h
 CFLAGS		= @CFLAGS@
 COMPILE		= $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
