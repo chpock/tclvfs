@@ -11,7 +11,7 @@
 # See the file "license.terms" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# RCS: @(#) $Id: Makefile.in,v 1.10 2003/01/30 17:48:58 hobbs Exp $
+# RCS: @(#) $Id: Makefile.in,v 1.11 2003/02/04 16:36:30 vincentdarley Exp $
 
 #========================================================================
 # Edit the following few lines when writing a new extension
@@ -35,9 +35,9 @@ vfs_LIB_FILE	= @vfs_LIB_FILE@
 #========================================================================
 
 RUNTIME_SOURCES	= ftpvfs.tcl httpvfs.tcl mk4vfs.tcl starkit.tcl \
-		  tarvfs.tcl tclIndex tclprocvfs.tcl testvfs.tcl \
+		  tarvfs.tcl tclprocvfs.tcl testvfs.tcl \
 		  vfsUrl.tcl vfsUtils.tcl vfslib.tcl \
-		  webdavvfs.tcl zipvfs.tcl
+		  webdavvfs.tcl zipvfs.tcl tclIndex
 
 #========================================================================
 # This is a list of header files to be installed
