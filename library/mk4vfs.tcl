@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2002 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.16 2002/10/19 10:04:15 jcw Exp $
+# $Id: mk4vfs.tcl,v 1.17 2002/12/24 11:12:56 vincentdarley Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -87,7 +87,12 @@ namespace eval vfs::mk4 {
 
     proc access {db name mode} {
 	# This needs implementing better.  
-	::mk4vfs::stat $db $name sb
+	if {$mode & 2} {
+	    ::mk4vfs::stat $db $name
+	    #error "read-only"
+	} else {
+	    ::mk4vfs::stat $db $name
+	}
     }
 
     proc open {db file mode permissions} {
@@ -299,8 +304,7 @@ namespace eval mk4vfs {
 	mk::file close $db
     }
 
-    proc stat {db path arr} {
-	upvar 1 $arr sb
+    proc stat {db path {arr ""}} {
 
 	set sp [::file split $path]
 	set tail [lindex $sp end]
@@ -326,8 +330,8 @@ namespace eval mk4vfs {
 	# Now check if final comp is a directory or a file
 	# CACHING is required - it can deliver a x15 speed-up!
 	
-	if { [string equal $tail "."] || [string equal $tail ":"] ||
-	[string equal $tail ""] } {
+	if {[string equal $tail "."] || [string equal $tail ":"] \
+	  || [string equal $tail ""]} {
 	    set row $parent
 
 	} elseif { [info exists v::cache($db,$parent,$tail)] } {
@@ -363,8 +367,16 @@ namespace eval mk4vfs {
 		}
 	    }
 	}
+
+	if {![string length $arr]} {
+	    # The caller doesn't need more detailed information.
+	    return 1
+	}
+
 	set cur $view!$row
 
+	upvar 1 $arr sb
+	
 	set sb(type)    $type
 	set sb(view)    $view
 	set sb(ino)     $cur
