@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.28 2003/02/18 21:41:53 vincentdarley Exp $
+# $Id: mk4vfs.tcl,v 1.29 2003/02/19 10:51:58 vincentdarley Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -288,8 +288,6 @@ namespace eval mk4vfs {
 	array set mode {exe translucent}
     }
 
-    namespace export mount umount
-
     proc init {db} {
 	mk::view layout $db.dirs \
 		{name:S parent:I {files {name:S size:I date:I contents:M}}}
@@ -300,11 +298,6 @@ namespace eval mk4vfs {
 
 	# 2001-12-13: use parent -1 for root level!
 	mk::set $db.dirs!0 parent -1
-    }
-
-    # deprecated, use vfs::mk4::Mount (first two args are reversed!)
-    proc mount {local mkfile args} {
-	uplevel [list ::vfs::mk4::Mount $mkfile $local] $args
     }
 
     proc _mount {{file ""} args} {
@@ -335,20 +328,8 @@ namespace eval mk4vfs {
 
     proc periodicCommit {db} {
 	variable flush
-	set v::timer($db) [after $flush [list mk4vfs::periodicCommit $db]]
+	set v::timer($db) [after $flush [list :mk4vfs::periodicCommit $db]]
 	mk::file commit $db
-    }
-
-    # deprecated: unmounts, but only if vfs was mounted on itself
-    proc umount {local} {
-	foreach {db path} [mk::file open] {
-	    if {[string equal $local $path]} {
-		vfs::filesystem unmount $local
-		_umount $db
-		return
-	    }
-	}
-	tclLog "umount $local? [mk::file open]"
     }
 
     proc _umount {db args} {
@@ -592,3 +573,26 @@ namespace eval mk4vfs {
     }
 }
 
+# DEPRECATED - please don't use.
+
+namespace eval mk4vfs {
+
+    namespace export mount umount
+
+    # deprecated, use vfs::mk4::Mount (first two args are reversed!)
+    proc mount {local mkfile args} {
+	uplevel [list ::vfs::mk4::Mount $mkfile $local] $args
+    }
+
+    # deprecated: unmounts, but only if vfs was mounted on itself
+    proc umount {local} {
+	foreach {db path} [mk::file open] {
+	    if {[string equal $local $path]} {
+		vfs::filesystem unmount $local
+		_umount $db
+		return
+	    }
+	}
+	tclLog "umount $local? [mk::file open]"
+    }
+}
