@@ -1,6 +1,6 @@
 # vfsUtils.tcl --
 #
-# $Id: vfsUtils.tcl,v 1.25 2003/02/21 16:05:43 vincentdarley Exp $
+# $Id: vfsUtils.tcl,v 1.26 2003/05/14 18:29:14 vincentdarley Exp $
 
 package require Tcl 8.4
 package require vfs
@@ -127,14 +127,14 @@ proc vfs::attributeCantConfigure {attr val largs} {
     }
 }
 
-::vfs::autoMountExtension "" ::vfs::mk4::Mount vfs
-::vfs::autoMountExtension .bin ::vfs::mk4::Mount vfs
-::vfs::autoMountExtension .kit ::vfs::mk4::Mount vfs
-::vfs::autoMountExtension .tar ::vfs::tar::Mount vfs
-::vfs::autoMountExtension .zip ::vfs::zip::Mount vfs
-::vfs::autoMountUrl ftp ::vfs::ftp::Mount vfs
+::vfs::autoMountExtension "" ::vfs::mk4::Mount vfs::mk4
+::vfs::autoMountExtension .bin ::vfs::mk4::Mount vfs::mk4
+::vfs::autoMountExtension .kit ::vfs::mk4::Mount vfs::mk4
+::vfs::autoMountExtension .tar ::vfs::tar::Mount vfs::tar
+::vfs::autoMountExtension .zip ::vfs::zip::Mount vfs::zip
+::vfs::autoMountUrl ftp ::vfs::ftp::Mount vfs::ftp
 ::vfs::autoMountUrl file ::vfs::fileUrlMount vfs
-::vfs::autoMountUrl tclns ::vfs::tclprocMount vfs
+::vfs::autoMountUrl tclns ::vfs::tclprocMount vfs::ns
 
 proc ::vfs::haveMount {url} {
     variable mounted
