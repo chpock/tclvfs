@@ -2,7 +2,7 @@
 # Copyright (C) 1997-1999 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Header: /home/rkeene/tmp/cvs2fossil/tclvfs/tclvfs/library/mk4vfs.tcl,v 1.5 2001/09/18 15:01:08 vincentdarley Exp $
+# $Header: /home/rkeene/tmp/cvs2fossil/tclvfs/tclvfs/library/mk4vfs.tcl,v 1.6 2001/09/20 12:54:59 vincentdarley Exp $
 #
 
 ###############################################################################
@@ -111,6 +111,8 @@ proc vfs::mk4::Mount {what local args} {
     ::vfs::RegisterMount $local [list ::vfs::mk4::Unmount $db]
     return $db
 }
+
+namespace eval mk4vfs {}
 
 proc mk4vfs::mount {args} {
     uplevel 1 [list ::vfs::mk4::mount] $args
