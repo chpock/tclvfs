@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.21 2003/02/05 00:28:17 andreas_kupries Exp $
+# $Id: mk4vfs.tcl,v 1.22 2003/02/08 15:08:17 vincentdarley Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -85,7 +85,7 @@ namespace eval vfs::mk4 {
 	    set res [::mk4vfs::getdir $db $path $pattern]
 	}
 	foreach p [::vfs::matchCorrectTypes $type $res $actualpath] {
-	    lappend newres "$actualpath$p"
+	    lappend newres [file join $actualpath $p]
 	}
 	return $newres
     }
