@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.20 2003/02/02 00:50:24 jcw Exp $
+# $Id: mk4vfs.tcl,v 1.21 2003/02/05 00:28:17 andreas_kupries Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -46,9 +46,15 @@ namespace eval vfs::mk4 {
 	}
 	set db [eval [list ::mk4vfs::_mount $mkfile] $args]
 	::vfs::filesystem mount $local [list ::vfs::mk4::handler $db]
-	::vfs::RegisterMount $local [list ::mk4vfs::_umount $db]
+	::vfs::RegisterMount $local [list ::vfs::mk4::Unmount $db]
 	return $db
     }
+
+    proc Unmount {db local} {
+	vfs::filesystem unmount $local
+	::mk4vfs::_umount $db
+    }
+
 
     proc handler {db cmd root relative actualpath args} {
 	#puts stderr "handler: $db - $cmd - $root - $relative - $actualpath - $args"
