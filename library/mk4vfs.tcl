@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.23 2003/02/09 17:25:57 jcw Exp $
+# $Id: mk4vfs.tcl,v 1.24 2003/02/17 11:55:21 vincentdarley Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -56,7 +56,10 @@ namespace eval vfs::mk4 {
 	::mk4vfs::_umount $db
     }
 
-
+    proc state {} {
+	return "translucent"
+    }
+    
     proc handler {db cmd root relative actualpath args} {
 	#puts stderr "handler: $db - $cmd - $root - $relative - $actualpath - $args"
 	if {$cmd == "matchindirectory"} {
