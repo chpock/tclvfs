@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.35 2003/03/17 10:01:59 jcw Exp $
+# $Id: mk4vfs.tcl,v 1.36 2003/05/14 21:00:32 vincentdarley Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -288,7 +288,7 @@ namespace eval vfs::mk4 {
 	    }
 	    2 {
 		# set value
-		if {$::mk4vfs::mode($db) == "readonly"} {
+		if {$::mk4vfs::v::mode($db) == "readonly"} {
 		    vfs::filesystem posixerror $::vfs::posix(EROFS)
 		}
 		set index [lindex $args 0]
