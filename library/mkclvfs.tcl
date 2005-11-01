@@ -1,6 +1,9 @@
 # mkclvfs.tcl -- Metakit Compatible Lite Virtual File System driver
 # Rewritten from mk4vfs.tcl, orig by by Matt Newman and Jean-Claude Wippler 
-# $Id: mkclvfs.tcl,v 1.2 2005/11/01 21:28:41 jcw Exp $
+# $Id: mkclvfs.tcl,v 1.3 2005/11/01 21:35:41 jcw Exp $
+
+# 1.0	initial release
+# 1.1	view size renamed to count, vlerq package renamed to thrill
 
 package provide vfs::mkcl 1.1
 package require vfs
@@ -138,7 +141,7 @@ namespace eval vfs::mkcl {
       set s 0
       set d 0
       set c ""
-      incr l [eval [linsert $tag end | size]]
+      incr l [eval [linsert $tag end | count]]
       incr l [llength [lsearch -exact -int -all $v::prows($db) [lindex $tag 3]]]
     } else {
       set t file
