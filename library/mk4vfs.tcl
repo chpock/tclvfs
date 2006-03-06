@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.39 2005/10/19 10:58:00 jcw Exp $
+# $Id: mk4vfs.tcl,v 1.40 2006/03/06 19:49:11 jcw Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -331,11 +331,8 @@ namespace eval mk4vfs {
 		{name:S parent:I {files {name:S size:I date:I contents:M}}}
 
 	if { [mk::view size $db.dirs] == 0 } {
-	    mk::row append $db.dirs name <root> parent 0
+	    mk::row append $db.dirs name <root> parent -1
 	}
-
-	# 2001-12-13: use parent -1 for root level!
-	mk::set $db.dirs!0 parent -1
     }
 
     proc _mount {{file ""} args} {
