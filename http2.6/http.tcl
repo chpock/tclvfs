@@ -8,7 +8,7 @@
 # See the file "license.terms" for information on usage and redistribution of
 # this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# RCS: @(#) $Id: http.tcl,v 1.3 2007/03/12 15:45:39 patthoyts Exp $
+# RCS: @(#) $Id: http.tcl,v 1.4 2007/10/11 20:14:50 patthoyts Exp $
 
 # Rough version history:
 # 1.0	Old http_get interface
@@ -978,6 +978,12 @@ proc http::Event {s token} {
             }
             variable encodings
 	    set state(state) body
+
+            # If doing a HEAD, then we won't get any body
+            if {$state(-validate)} {
+                Eof $token
+                return
+            }
 
             # For non-chunked transfer we may have no body -- in this case we may get
             # no further file event if the connection doesn't close and no more data
