@@ -11,7 +11,7 @@
 # See the file "license.terms" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# RCS: @(#) $Id: Makefile.in,v 1.23 2007/04/13 18:47:50 patthoyts Exp $
+# RCS: @(#) $Id: Makefile.in,v 1.24 2008/04/15 23:59:24 andreas_kupries Exp $
 
 #========================================================================
 # Edit the following few lines when writing a new extension
@@ -41,7 +41,7 @@ PKG_TCL_SOURCES = @PKG_TCL_SOURCES@ \
 		  tarvfs.tcl tclprocvfs.tcl testvfs.tcl \
 		  vfsUrl.tcl vfsUtils.tcl vfslib.tcl \
 		  webdavvfs.tcl zipvfs.tcl tclIndex \
-		  tkvfs.tcl \
+		  tkvfs.tcl mk4vfscompat.tcl zipvfscompat.tcl \
 		  template/collatevfs.tcl template/deltavfs.tcl \
 		  template/fishvfs.tcl template/globfind.tcl \
 		  template/quotavfs.tcl template/tdelta.tcl \
