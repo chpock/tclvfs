@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.40 2006/03/06 19:49:11 jcw Exp $
+# $Id: mk4vfs.tcl,v 1.41 2008/04/15 21:11:53 andreas_kupries Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -16,8 +16,9 @@
 # 17mar03 jcw	1.9	start with mode translucent or readwrite
 # 18oct05 jcw	1.10	add fallback to MK Compatible Lite driver (vfs::mkcl)
 
-package provide mk4vfs 1.10
-package provide vfs::mk4 1.10
+# Removed provision of the backward compatible name. Moved to separate
+# file/package.
+package provide vfs::mk4 1.10.1
 package require vfs
 
 # need this so init failure in interactive mode does not mess up errorInfo
