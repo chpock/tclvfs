@@ -8,7 +8,7 @@
 # See the file "license.terms" for information on usage and redistribution of
 # this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# RCS: @(#) $Id: http.tcl,v 1.7 2008/03/21 21:07:32 hobbs Exp $
+# RCS: @(#) $Id: http.tcl,v 1.8 2008/08/11 22:14:26 patthoyts Exp $
 
 # Rough version history post-core-split:
 # 2.5   Added HTTP/1.1 support for persistent connections. New options
@@ -25,10 +25,11 @@
 # 2.6.8 Merged with core version in 8.5.2 and 8.4.19 and above changes.
 #	Core is 2.7, this v2.6.8 has defaultKeepalive 1 and different
 #	default -useragent.
+# 2.6.9 Merged fix for zlib crc check on 64bit systems.
 
 package require Tcl 8.4
 # keep this in sync with pkgIndex.tcl
-package provide http 2.6.8
+package provide http 2.6.9
 
 namespace eval http {
     # Allow resourcing to not clobber existing data
@@ -1428,8 +1429,8 @@ proc http::Gunzip {data} {
 
     binary scan [string range $data end-7 end] ii crc size
     set inflated [zlib inflate [string range $data $pos end-8]]
-
-    if { $crc != [set chk [zlib crc32 $inflated]] } {
+    set chk [zlib crc32 $inflated]
+    if { ($crc & 0xffffffff) != ($chk & 0xffffffff)} {
 	return -code error "invalid data: checksum mismatch $crc != $chk"
     }
     return $inflated
