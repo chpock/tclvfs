@@ -11,7 +11,7 @@
 # See the file "license.terms" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# RCS: @(#) $Id: Makefile.in,v 1.26 2008/12/02 18:09:56 hobbs Exp $
+# RCS: @(#) $Id: Makefile.in,v 1.27 2008/12/02 18:38:12 hobbs Exp $
 
 #========================================================================
 # Edit the following few lines when writing a new extension
@@ -269,6 +269,9 @@ VPATH = $(srcdir)/generic:$(srcdir)/unix:$(srcdir)/win
 
 #pkgIndex.tcl:
 #	( echo pkg_mkIndex . $(PKG_LIB_FILE) \; exit; ) | $(TCLSH)
+pkgIndex.tcl: $(srcdir)/pkgIndex.tcl.in
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 #========================================================================
 # Don't modify the file to clean here.  Instead, set the "CLEANFILES"
