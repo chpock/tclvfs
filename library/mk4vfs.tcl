@@ -2,7 +2,7 @@
 # Copyright (C) 1997-2003 Sensus Consulting Ltd. All Rights Reserved.
 # Matt Newman <matt@sensus.org> and Jean-Claude Wippler <jcw@equi4.com>
 #
-# $Id: mk4vfs.tcl,v 1.41 2008/04/15 21:11:53 andreas_kupries Exp $
+# $Id: mk4vfs.tcl,v 1.42 2008/12/03 02:16:19 hobbs Exp $
 #
 # 05apr02 jcw	1.3	fixed append mode & close,
 #			privatized memchan_handler
@@ -24,17 +24,6 @@ package require vfs
 # need this so init failure in interactive mode does not mess up errorInfo
 if {[info exists env(VFS_DEBUG)] && [info commands history] == ""} {
     proc history {args} {}
-}
-
-# things that can no longer really be left out (but this is the wrong spot!)
-# be as non-invasive as possible, using these definitions as last resort
-
-if {![info exists auto_index(lassign)] && [info commands lassign] == ""} {
-    set auto_index(lassign) {
-	proc lassign {l args} {
-	    foreach v $l a $args { uplevel 1 [list set $a $v] }
-	}
-    }
 }
 
 namespace eval vfs::mk4 {
