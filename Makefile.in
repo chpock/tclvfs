@@ -11,7 +11,7 @@
 # See the file "license.terms" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# RCS: @(#) $Id: Makefile.in,v 1.28 2008/12/03 02:30:42 hobbs Exp $
+# RCS: @(#) $Id: Makefile.in,v 1.29 2008/12/04 18:20:00 hobbs Exp $
 
 #========================================================================
 # Edit the following few lines when writing a new extension
@@ -252,9 +252,12 @@ $(PKG_STUB_LIB_FILE): $(PKG_STUB_OBJECTS)
 # Setting the VPATH variable to a list of paths will cause the makefile
 # to look into these paths when resolving .c to .obj dependencies.
 # As necessary, add $(srcdir):$(srcdir)/compat:....
+#
+# The first $(srcdir) isn't necessary, but configure will strip it the
+# first $(srcdir) it sees in VPATH when configuring in the toplevel dir.
 #========================================================================
 
-VPATH = $(srcdir)/generic:$(srcdir)/unix:$(srcdir)/win
+VPATH = $(srcdir):$(srcdir)/generic
 
 .c.@OBJEXT@:
 	$(COMPILE) -c `@CYGPATH@ $<` -o $@
