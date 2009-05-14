@@ -18,7 +18,7 @@
 # Copyright (c) 2003-2008 Pat Thoyts
 #
 #-------------------------------------------------------------------------
-# RCS: @(#)$Id: makefile.vc,v 1.30 2009/02/06 19:13:27 andreas_kupries Exp $
+# RCS: @(#)$Id: makefile.vc,v 1.31 2009/05/14 19:02:33 patthoyts Exp $
 #-------------------------------------------------------------------------
 
 # Check to see we are configured to build with MSVC (MSDEVDIR or MSVCDIR)
@@ -356,8 +356,8 @@ pkgIndex:   setup $(OUT_DIR)\pkgIndex.tcl $(OUT_DIR)\vfs.tcl
 
 test: setup $(PROJECT)
 	@set TCL_LIBRARY=$(TCL_LIBRARY:\=/)
-        @set TCLLIBPATH=$(OUT_DIR_PATH:\=/)
-	@set VFS_LIBRARY=$(LIBDIR:\=/)
+	@set TCLLIBPATH=$(OUT_DIR_PATH:\=/)
+	$(CPY) $(LIBDIR)\*.tcl $(OUT_DIR)
 !if $(TCLINSTALL)
 	@set PATH=$(_TCLDIR)\bin;$(PATH)
 !else
