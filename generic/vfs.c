@@ -326,7 +326,7 @@ static void            VfsInternalError(Tcl_Interp* interp);
  *----------------------------------------------------------------------
  */
 
-int
+EXTERN int DLLEXPORT
 Vfs_Init(interp)
     Tcl_Interp *interp;		/* Interpreter for application. */
 {
