@@ -77,11 +77,12 @@ exec_prefix	= @exec_prefix@
 
 bindir		= @bindir@
 libdir		= @libdir@
+datarootdir     = @datarootdir@
 datadir		= @datadir@
 mandir		= @mandir@
 includedir	= @includedir@
 
-DESTDIR		=
+DESTDIR		= 
 
 PKG_DIR		= $(PACKAGE_NAME)$(PACKAGE_VERSION)
 pkgdatadir	= $(datadir)/$(PKG_DIR)
