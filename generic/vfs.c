@@ -2006,16 +2006,17 @@ VfsBuildCommandForPath(Tcl_Interp **iRef, CONST char* cmd, Tcl_Obj *pathPtr) {
         return NULL;
     }
     
-    splitPosition = nativeRep->splitPosition;
-    normed = Tcl_FSGetNormalizedPath(NULL, pathPtr);
-    normedString = Tcl_GetStringFromObj(normed, &len);
-    
     mountCmd = Tcl_DuplicateObj(nativeRep->fsCmd->mountCmd);
     Tcl_IncrRefCount(mountCmd);
     if (Tcl_ListObjLength(NULL, mountCmd, &dummyLen) == TCL_ERROR) {
 	Tcl_DecrRefCount(mountCmd);
 	return NULL;
     }
+    
+    splitPosition = nativeRep->splitPosition;
+    normed = Tcl_FSGetNormalizedPath(NULL, pathPtr);
+    normedString = Tcl_GetStringFromObj(normed, &len);
+
     Tcl_ListObjAppendElement(NULL, mountCmd, Tcl_NewStringObj(cmd,-1));
     if (splitPosition == len) {
 	Tcl_ListObjAppendElement(NULL, mountCmd, normed);
