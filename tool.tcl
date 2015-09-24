@@ -6,7 +6,7 @@
 # Add in the C Code
 ###
 my package add vfs {
-  class: tea
+  class: binary
   version: 1.4.2
   sources: {generic/vfs.c}
   init: Vfs_Init

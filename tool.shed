@@ -1,5 +1,5 @@
 
-  generated: {2014-11-18 18:21:08 UTC}
+  generated: {2015-09-24 20:22:17 UTC}
   description: {This is a fossil repository built from a cvs export of the source at http://tclvfs.sourceforge.net}
   name: Tcl
   uuid: 59aa1664d4c2fc11f1a92725f5d3336b13bd67ef
@@ -16,7 +16,7 @@
     trunk {
       distribution: official
       checkout: trunk
-      timestamp: {2014-11-18 18:21:08 UTC}
+      timestamp: {2015-09-24 20:22:17 UTC}
     }
   }
   application/ {
@@ -32,7 +32,7 @@
   }
   package/ {
     {vfs 1.4.2} {
-      class: tea
+      class: binary
       version: 1.4.2
       sources: generic/vfs.c
       init: Vfs_Init
