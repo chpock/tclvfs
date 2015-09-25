@@ -1,12 +1,13 @@
 
-  generated: {2015-09-24 20:22:17 UTC}
+  generated: {2015-09-24 20:24:11 UTC}
+  release: trunk
   description: {This is a fossil repository built from a cvs export of the source at http://tclvfs.sourceforge.net}
-  name: Tcl
+  name: tclvfs
   uuid: 59aa1664d4c2fc11f1a92725f5d3336b13bd67ef
   distribution/ {
     official {
       class: fossil
-      project-name: Tcl
+      project-name: {Tcl VFS}
       project-code: 59aa1664d4c2fc11f1a92725f5d3336b13bd67ef
       release: trunk
       url: http://fossil.etoyoc.com/fossil/tclvfs
@@ -16,7 +17,7 @@
     trunk {
       distribution: official
       checkout: trunk
-      timestamp: {2015-09-24 20:22:17 UTC}
+      timestamp: {2015-09-24 20:24:11 UTC}
     }
   }
   application/ {
@@ -26,7 +27,7 @@
       name: template
       path: library/template
       class: tcl
-      sources: {}
+      sources: {chrootvfs.tcl collatevfs.tcl deltavfs.tcl fishvfs.tcl globfind.tcl quotavfs.tcl tdelta.tcl templatevfs.tcl versionvfs.tcl}
       packages: {{vfs::template::collate 1.5.3} {vfs::template::version::delta 1.5.2} {vfs::template::fish 1.5.2} {fileutil::globfind 1.5} {vfs::template::quota 1.5.2} {trsync 1.0} {vfs::template 1.5.5} {vfs::template::version 1.5.2}}
     }
   }
