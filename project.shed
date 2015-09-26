@@ -1,0 +1,170 @@
+
+  generated: {2015-09-25 01:57:35 UTC}
+  release: trunk
+  name: tclvfs
+  description: {This is a fossil repository built from a cvs export of the source at http://tclvfs.sourceforge.net}
+  uuid: 59aa1664d4c2fc11f1a92725f5d3336b13bd67ef
+  distribution/ {
+    official {
+      name: official
+      class: fossil
+      project-name: {Tcl VFS}
+      project-code: 59aa1664d4c2fc11f1a92725f5d3336b13bd67ef
+      release: trunk
+      url: http://fossil.etoyoc.com/fossil/tclvfs
+      project-short-name: tclvfs
+    }
+  }
+  release/ {
+    trunk {
+      name: trunk
+      distribution: official
+      checkout: trunk
+      timestamp: {2015-09-25 01:57:35 UTC}
+    }
+  }
+  module/ {
+    template {
+      name: template
+      path: library/template
+      class: tcl
+      sources: {chrootvfs.tcl collatevfs.tcl deltavfs.tcl fishvfs.tcl globfind.tcl quotavfs.tcl tdelta.tcl templatevfs.tcl versionvfs.tcl}
+      package-require: {fileutil::globfind {vfs 1.0} {vfs::template 1.5} {vfs::template::version 1.5}}
+      package-provide: {{vfs::template::collate 1.5.3} {vfs::template::version::delta 1.5.2} {vfs::template::fish 1.5.2} {fileutil::globfind 1.5} {vfs::template::quota 1.5.2} {trsync 1.0} {vfs::template 1.5.5} {vfs::template::version 1.5.2}}
+    }
+  }
+  package/ {
+    {vfs 1.4.2} {
+      name: vfs
+      class: binary
+      version: 1.4.2
+      sources: generic/vfs.c
+      init: Vfs_Init
+    }
+    {vfs::ftp 1.0} {
+      name: vfs::ftp
+      file: ftpvfs.tcl
+      version: 1.0
+      require: {{vfs 1.0} ftp}
+    }
+    {vfs::http 0.6} {
+      name: vfs::http
+      file: httpvfs.tcl
+      version: 0.6
+      require: {{vfs 1.0} http}
+    }
+    {vfs::mk4 1.10.1} {
+      name: vfs::mk4
+      file: mk4vfs.tcl
+      version: 1.10.1
+      require: vfs
+    }
+    {starkit 1.3.3} {
+      name: starkit
+      file: starkit.tcl
+      version: 1.3.3
+      require: vfs
+    }
+    {vfs::tar 0.91} {
+      name: vfs::tar
+      file: tarvfs.tcl
+      require: vfs
+      version: 0.91
+    }
+    {vfs::ns 0.5.1} {
+      name: vfs::ns
+      file: tclprocvfs.tcl
+      version: 0.5.1
+      require: {{vfs 1.0}}
+    }
+    {vfs::template::collate 1.5.3} {
+      name: vfs::template::collate
+      file: collatevfs.tcl
+      require: {{vfs::template 1.5}}
+      version: 1.5.3
+      module: template
+    }
+    {vfs::template::version::delta 1.5.2} {
+      name: vfs::template::version::delta
+      file: deltavfs.tcl
+      require: {{vfs::template 1.5} {vfs::template::version 1.5}}
+      version: 1.5.2
+      module: template
+    }
+    {vfs::template::fish 1.5.2} {
+      name: vfs::template::fish
+      file: fishvfs.tcl
+      require: {{vfs::template 1.5}}
+      version: 1.5.2
+      module: template
+    }
+    {fileutil::globfind 1.5} {
+      name: fileutil::globfind
+      file: globfind.tcl
+      version: 1.5
+      module: template
+    }
+    {vfs::template::quota 1.5.2} {
+      name: vfs::template::quota
+      file: quotavfs.tcl
+      require: {{vfs::template 1.5} fileutil::globfind}
+      version: 1.5.2
+      module: template
+    }
+    {trsync 1.0} {
+      name: trsync
+      file: tdelta.tcl
+      version: 1.0
+      module: template
+    }
+    {vfs::template 1.5.5} {
+      name: vfs::template
+      file: templatevfs.tcl
+      require: {{vfs 1.0}}
+      version: 1.5.5
+      module: template
+    }
+    {vfs::template::version 1.5.2} {
+      name: vfs::template::version
+      file: versionvfs.tcl
+      require: {{vfs::template 1.5} fileutil::globfind}
+      version: 1.5.2
+      module: template
+    }
+    {vfs::test 1.0} {
+      name: vfs::test
+      file: testvfs.tcl
+      version: 1.0
+      require: {{vfs 1.0}}
+    }
+    {vfs::tk 0.5} {
+      name: vfs::tk
+      file: tkvfs.tcl
+      version: 0.5
+      require: {{vfs 1.0}}
+    }
+    {vfslib 1.4} {
+      name: vfslib
+      file: vfslib.tcl
+      require: {{Tcl 8.4}}
+      version: 1.4
+    }
+    {vfs::urltype 1.0} {
+      name: vfs::urltype
+      file: vfsUrl.tcl
+      version: 1.0
+      require: vfs
+    }
+    {vfs::webdav 0.1} {
+      name: vfs::webdav
+      file: webdavvfs.tcl
+      version: 0.1
+      require: {{vfs 1.0} {http 2.6} base64}
+    }
+    {vfs::zip 1.0.4} {
+      name: vfs::zip
+      file: zipvfs.tcl
+      version: 1.0.4
+      require: vfs
+    }
+  }
