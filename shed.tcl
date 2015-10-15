@@ -5,7 +5,9 @@
 ###
 # Add in the C Code
 ###
-my package add vfs {
+my add {
+  shed_class: package
+  name: vfs
   class: binary
   version: 1.4.2
   sources: {generic/vfs.c}
@@ -16,5 +18,5 @@ my package add vfs {
 # Build the module section
 ###
 foreach path [glob [file join $::TOOL_ROOT library *]] {
-  my module scan $path
+  my scan $path
 }

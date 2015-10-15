@@ -1,170 +1,576 @@
 
-  generated: {2015-09-25 01:57:35 UTC}
-  release: trunk
-  name: tclvfs
-  description: {This is a fossil repository built from a cvs export of the source at http://tclvfs.sourceforge.net}
-  uuid: 59aa1664d4c2fc11f1a92725f5d3336b13bd67ef
-  distribution/ {
-    official {
-      name: official
-      class: fossil
-      project-name: {Tcl VFS}
-      project-code: 59aa1664d4c2fc11f1a92725f5d3336b13bd67ef
-      release: trunk
-      url: http://fossil.etoyoc.com/fossil/tclvfs
-      project-short-name: tclvfs
-    }
+59aa1664d4c2fc11f1a92725f5d3336b13bd67ef {
+  entity {
+    name: tclvfs
+    shed_class: project
+    version: {}
+  }
+  meta {
+    class: generic
+    description: {This is a fossil repository built from a cvs export of the source at http://tclvfs.sourceforge.net}
+    distribution: fossil
+    generated: {2015-09-26 02:12:17 UTC}
+    release: trunk
   }
   release/ {
-    trunk {
-      name: trunk
-      distribution: official
-      checkout: trunk
-      timestamp: {2015-09-25 01:57:35 UTC}
-    }
+    ae1a8cc19b596a6fe88627db5c9d3a4268a95bf7
   }
-  module/ {
-    template {
-      name: template
-      path: library/template
-      class: tcl
-      sources: {chrootvfs.tcl collatevfs.tcl deltavfs.tcl fishvfs.tcl globfind.tcl quotavfs.tcl tdelta.tcl templatevfs.tcl versionvfs.tcl}
-      package-require: {fileutil::globfind {vfs 1.0} {vfs::template 1.5} {vfs::template::version 1.5}}
-      package-provide: {{vfs::template::collate 1.5.3} {vfs::template::version::delta 1.5.2} {vfs::template::fish 1.5.2} {fileutil::globfind 1.5} {vfs::template::quota 1.5.2} {trsync 1.0} {vfs::template 1.5.5} {vfs::template::version 1.5.2}}
-    }
+  distribution/ {
+    ce546ee179f83bd1c79de02e6660d727e63668fc
   }
   package/ {
-    {vfs 1.4.2} {
-      name: vfs
-      class: binary
-      version: 1.4.2
-      sources: generic/vfs.c
-      init: Vfs_Init
-    }
-    {vfs::ftp 1.0} {
-      name: vfs::ftp
-      file: ftpvfs.tcl
-      version: 1.0
-      require: {{vfs 1.0} ftp}
-    }
-    {vfs::http 0.6} {
-      name: vfs::http
-      file: httpvfs.tcl
-      version: 0.6
-      require: {{vfs 1.0} http}
-    }
-    {vfs::mk4 1.10.1} {
-      name: vfs::mk4
-      file: mk4vfs.tcl
-      version: 1.10.1
-      require: vfs
-    }
-    {starkit 1.3.3} {
-      name: starkit
-      file: starkit.tcl
-      version: 1.3.3
-      require: vfs
-    }
-    {vfs::tar 0.91} {
-      name: vfs::tar
-      file: tarvfs.tcl
-      require: vfs
-      version: 0.91
-    }
-    {vfs::ns 0.5.1} {
-      name: vfs::ns
-      file: tclprocvfs.tcl
-      version: 0.5.1
-      require: {{vfs 1.0}}
-    }
-    {vfs::template::collate 1.5.3} {
-      name: vfs::template::collate
-      file: collatevfs.tcl
-      require: {{vfs::template 1.5}}
-      version: 1.5.3
-      module: template
-    }
-    {vfs::template::version::delta 1.5.2} {
-      name: vfs::template::version::delta
-      file: deltavfs.tcl
-      require: {{vfs::template 1.5} {vfs::template::version 1.5}}
-      version: 1.5.2
-      module: template
-    }
-    {vfs::template::fish 1.5.2} {
-      name: vfs::template::fish
-      file: fishvfs.tcl
-      require: {{vfs::template 1.5}}
-      version: 1.5.2
-      module: template
-    }
-    {fileutil::globfind 1.5} {
-      name: fileutil::globfind
-      file: globfind.tcl
-      version: 1.5
-      module: template
-    }
-    {vfs::template::quota 1.5.2} {
-      name: vfs::template::quota
-      file: quotavfs.tcl
-      require: {{vfs::template 1.5} fileutil::globfind}
-      version: 1.5.2
-      module: template
-    }
-    {trsync 1.0} {
-      name: trsync
-      file: tdelta.tcl
-      version: 1.0
-      module: template
-    }
-    {vfs::template 1.5.5} {
-      name: vfs::template
-      file: templatevfs.tcl
-      require: {{vfs 1.0}}
-      version: 1.5.5
-      module: template
-    }
-    {vfs::template::version 1.5.2} {
-      name: vfs::template::version
-      file: versionvfs.tcl
-      require: {{vfs::template 1.5} fileutil::globfind}
-      version: 1.5.2
-      module: template
-    }
-    {vfs::test 1.0} {
-      name: vfs::test
-      file: testvfs.tcl
-      version: 1.0
-      require: {{vfs 1.0}}
-    }
-    {vfs::tk 0.5} {
-      name: vfs::tk
-      file: tkvfs.tcl
-      version: 0.5
-      require: {{vfs 1.0}}
-    }
-    {vfslib 1.4} {
-      name: vfslib
-      file: vfslib.tcl
-      require: {{Tcl 8.4}}
-      version: 1.4
-    }
-    {vfs::urltype 1.0} {
-      name: vfs::urltype
-      file: vfsUrl.tcl
-      version: 1.0
-      require: vfs
-    }
-    {vfs::webdav 0.1} {
-      name: vfs::webdav
-      file: webdavvfs.tcl
-      version: 0.1
-      require: {{vfs 1.0} {http 2.6} base64}
-    }
-    {vfs::zip 1.0.4} {
-      name: vfs::zip
-      file: zipvfs.tcl
-      version: 1.0.4
-      require: vfs
-    }
+    1492bbccd2680f26d1f89bf3a39288abdebf062b
+    73d3859cf7c07b396ba061c698ed3f1f5f2a7b83
+    1206f7dc09f83b0341943dd833caab474c9efd83
+    0c2b55e0d78f549ee1c7ea2afac1de215781947c
+    1a5d2d62d009aa370a420fdf47d107c7f93a20c6
+    4b70722edc4a4b5d29084e8d387daeb4fcc0d0fd
+    24f655b86ef22c2104e05a51c585b1814b375fea
+    03f2b2c9b5a372344da42f1a666d59ca193a1025
+    769e6a45f89591a243316683e3164aa70b96b7a0
+    2ad9dcd19744db59725f41f571b23233be705c57
+    660982858d3e65a6b54364b2a1af0e6b6696b0ed
+    13d336e12f5d7a90d0715951d1650a5a62d545c8
+    86c61083c5fdc1a259623da1450c6d6e57c686b8
+    ec4ac9633e718c1569c57a0c50bb02897d6e8448
+    b25b4def72a3dfa5b6ae0d183d71f6bf13e26180
+    077325223b712c2dd1258a07aaa39a93534a85f5
+    1230071413e39f5cc9dbde4ec06e50fd87647cf8
+    9829acca949760d244f148bb164cad820ed0f20d
+    18bd5387db00aea7b3a29a4afe9a462f03a9abc7
+    c26ead2e5e9d723d028214f27adea1fcc9d76ba9
+    5abcf05fac2749ce3a523d7674f97d0e20bcb424
   }
+  file/ {
+    fa08d929a5b71a3d36c3eda1ea3a7fed1bb2326f
+    181079014d13ba96d2e3afe5de5524a3969a9a56
+    311856baa29da4eb8be0f2f3130f163ebce4bda6
+    8fbe6763a8692841b21497b04eefcd64e21c43c9
+    7a4f1397760d5db4fa3ec95100540f4ea2905386
+    51db71e012a85d641cbec4dd32a1d9eddb4392b9
+    8f2b98bb70ea431c983bf578efcb3f913a2bb38e
+    ff187e5bd89e02bd6c3665f570ec0ae2b0a0f748
+    ef90024939e6ef0bf61612f05fb646031834982f
+    3dd33a5a02ba9630c887506d22f58631e310e81a
+    b95b73f8961520229f2331465f462cc2178817d1
+    1e5b9915c40b4f8dad52af45c991e710839023c7
+    52608bd3d95d530654c88b7de093a7440360a36c
+    d6d38c823536652b8f1bc212da389394c13ea67b
+  }
+  module/ {
+    3fb849cfbd1dec0d6318fd17521f0c4667e7b638
+  }
+}
+ae1a8cc19b596a6fe88627db5c9d3a4268a95bf7 {
+  entity {
+    name: trunk
+    shed_class: release
+    version: {}
+  }
+  meta {
+    checkout: trunk
+    class: generic
+    timestamp: {2015-09-26 02:12:17 UTC}
+  }
+}
+ce546ee179f83bd1c79de02e6660d727e63668fc {
+  entity {
+    name: fossil
+    shed_class: distribution
+    version: {}
+  }
+  meta {
+    class: generic
+    format: fossil
+    project: 59aa1664d4c2fc11f1a92725f5d3336b13bd67ef
+    project-name: {Tcl VFS}
+    project-short-name: tclvfs
+    release: trunk
+    url: http://fossil.etoyoc.com/fossil/tclvfs
+  }
+}
+1492bbccd2680f26d1f89bf3a39288abdebf062b {
+  entity {
+    name: vfs
+    shed_class: package
+    version: 1.4.2
+  }
+  meta {
+    class: binary
+    init: Vfs_Init
+    sources: generic/vfs.c
+  }
+}
+73d3859cf7c07b396ba061c698ed3f1f5f2a7b83 {
+  entity {
+    name: vfs::ftp
+    shed_class: package
+    version: 1
+  }
+  meta {
+    class: package
+    file: ftpvfs.tcl
+  }
+}
+fa08d929a5b71a3d36c3eda1ea3a7fed1bb2326f {
+  entity {
+    name: ftpvfs.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/ftpvfs.tcl
+    format: tcl
+    package-provide: {vfs::ftp 1.0}
+    package-require: {ftp {vfs 1.0}}
+  }
+  package/ {
+    73d3859cf7c07b396ba061c698ed3f1f5f2a7b83
+  }
+}
+1206f7dc09f83b0341943dd833caab474c9efd83 {
+  entity {
+    name: vfs::http
+    shed_class: package
+    version: 0.6
+  }
+  meta {
+    class: package
+    file: httpvfs.tcl
+  }
+}
+181079014d13ba96d2e3afe5de5524a3969a9a56 {
+  entity {
+    name: httpvfs.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/httpvfs.tcl
+    format: tcl
+    package-provide: {vfs::http 0.6}
+    package-require: {http {vfs 1.0}}
+  }
+  package/ {
+    1206f7dc09f83b0341943dd833caab474c9efd83
+  }
+}
+0c2b55e0d78f549ee1c7ea2afac1de215781947c {
+  entity {
+    name: vfs::mk4
+    shed_class: package
+    version: 1.10.1
+  }
+  meta {
+    class: package
+    file: mk4vfs.tcl
+  }
+}
+311856baa29da4eb8be0f2f3130f163ebce4bda6 {
+  entity {
+    name: mk4vfs.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/mk4vfs.tcl
+    format: tcl
+    package-provide: {vfs::mk4 1.10.1}
+    package-require: vfs
+  }
+  package/ {
+    0c2b55e0d78f549ee1c7ea2afac1de215781947c
+  }
+}
+1a5d2d62d009aa370a420fdf47d107c7f93a20c6 {
+  entity {
+    name: starkit
+    shed_class: package
+    version: 1.3.3
+  }
+  meta {
+    class: package
+    file: starkit.tcl
+  }
+}
+8fbe6763a8692841b21497b04eefcd64e21c43c9 {
+  entity {
+    name: starkit.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/starkit.tcl
+    format: tcl
+    package-provide: {starkit 1.3.3}
+    package-require: vfs
+  }
+  package/ {
+    1a5d2d62d009aa370a420fdf47d107c7f93a20c6
+  }
+}
+4b70722edc4a4b5d29084e8d387daeb4fcc0d0fd {
+  entity {
+    name: vfs::tar
+    shed_class: package
+    version: 0.91
+  }
+  meta {
+    class: package
+    file: tarvfs.tcl
+  }
+}
+7a4f1397760d5db4fa3ec95100540f4ea2905386 {
+  entity {
+    name: tarvfs.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/tarvfs.tcl
+    format: tcl
+    package-provide: {vfs::tar 0.91}
+    package-require: vfs
+  }
+  package/ {
+    4b70722edc4a4b5d29084e8d387daeb4fcc0d0fd
+  }
+}
+24f655b86ef22c2104e05a51c585b1814b375fea {
+  entity {
+    name: vfs::ns
+    shed_class: package
+    version: 0.5.1
+  }
+  meta {
+    class: package
+    file: tclprocvfs.tcl
+  }
+}
+51db71e012a85d641cbec4dd32a1d9eddb4392b9 {
+  entity {
+    name: tclprocvfs.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/tclprocvfs.tcl
+    format: tcl
+    package-provide: {vfs::ns 0.5.1}
+    package-require: {{vfs 1.0}}
+  }
+  package/ {
+    24f655b86ef22c2104e05a51c585b1814b375fea
+  }
+}
+3fb849cfbd1dec0d6318fd17521f0c4667e7b638 {
+  entity {
+    name: template
+    shed_class: module
+    version: {}
+  }
+  meta {
+    class: source
+    package-provide: {{fileutil::globfind 1.5} {trsync 1.0} {vfs::template 1.5.5} {vfs::template::collate 1.5.3} {vfs::template::fish 1.5.2} {vfs::template::quota 1.5.2} {vfs::template::version 1.5.2} {vfs::template::version::delta 1.5.2}}
+    package-require: {fileutil::globfind {vfs 1.0} {vfs::template 1.5} {vfs::template::version 1.5}}
+    path: library/template
+  }
+  package/ {
+    03f2b2c9b5a372344da42f1a666d59ca193a1025
+    769e6a45f89591a243316683e3164aa70b96b7a0
+    2ad9dcd19744db59725f41f571b23233be705c57
+    660982858d3e65a6b54364b2a1af0e6b6696b0ed
+    13d336e12f5d7a90d0715951d1650a5a62d545c8
+    86c61083c5fdc1a259623da1450c6d6e57c686b8
+    ec4ac9633e718c1569c57a0c50bb02897d6e8448
+    b25b4def72a3dfa5b6ae0d183d71f6bf13e26180
+  }
+}
+03f2b2c9b5a372344da42f1a666d59ca193a1025 {
+  entity {
+    name: vfs::template::collate
+    shed_class: package
+    version: 1.5.3
+  }
+  meta {
+    class: package
+    file: collatevfs.tcl
+  }
+}
+769e6a45f89591a243316683e3164aa70b96b7a0 {
+  entity {
+    name: vfs::template::version::delta
+    shed_class: package
+    version: 1.5.2
+  }
+  meta {
+    class: package
+    file: deltavfs.tcl
+  }
+}
+2ad9dcd19744db59725f41f571b23233be705c57 {
+  entity {
+    name: vfs::template::fish
+    shed_class: package
+    version: 1.5.2
+  }
+  meta {
+    class: package
+    file: fishvfs.tcl
+  }
+}
+660982858d3e65a6b54364b2a1af0e6b6696b0ed {
+  entity {
+    name: fileutil::globfind
+    shed_class: package
+    version: 1.5
+  }
+  meta {
+    class: package
+    file: globfind.tcl
+  }
+}
+13d336e12f5d7a90d0715951d1650a5a62d545c8 {
+  entity {
+    name: vfs::template::quota
+    shed_class: package
+    version: 1.5.2
+  }
+  meta {
+    class: package
+    file: quotavfs.tcl
+  }
+}
+86c61083c5fdc1a259623da1450c6d6e57c686b8 {
+  entity {
+    name: trsync
+    shed_class: package
+    version: 1
+  }
+  meta {
+    class: package
+    file: tdelta.tcl
+  }
+}
+ec4ac9633e718c1569c57a0c50bb02897d6e8448 {
+  entity {
+    name: vfs::template
+    shed_class: package
+    version: 1.5.5
+  }
+  meta {
+    class: package
+    file: templatevfs.tcl
+  }
+}
+b25b4def72a3dfa5b6ae0d183d71f6bf13e26180 {
+  entity {
+    name: vfs::template::version
+    shed_class: package
+    version: 1.5.2
+  }
+  meta {
+    class: package
+    file: versionvfs.tcl
+  }
+}
+077325223b712c2dd1258a07aaa39a93534a85f5 {
+  entity {
+    name: vfs::test
+    shed_class: package
+    version: 1
+  }
+  meta {
+    class: package
+    file: testvfs.tcl
+  }
+}
+8f2b98bb70ea431c983bf578efcb3f913a2bb38e {
+  entity {
+    name: testvfs.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/testvfs.tcl
+    format: tcl
+    package-provide: {vfs::test 1.0}
+    package-require: {{vfs 1.0}}
+  }
+  package/ {
+    077325223b712c2dd1258a07aaa39a93534a85f5
+  }
+}
+1230071413e39f5cc9dbde4ec06e50fd87647cf8 {
+  entity {
+    name: vfs::tk
+    shed_class: package
+    version: 0.5
+  }
+  meta {
+    class: package
+    file: tkvfs.tcl
+  }
+}
+ff187e5bd89e02bd6c3665f570ec0ae2b0a0f748 {
+  entity {
+    name: tkvfs.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/tkvfs.tcl
+    format: tcl
+    package-provide: {vfs::tk 0.5}
+    package-require: {{vfs 1.0}}
+  }
+  package/ {
+    1230071413e39f5cc9dbde4ec06e50fd87647cf8
+  }
+}
+ef90024939e6ef0bf61612f05fb646031834982f {
+  entity {
+    name: vfs.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/vfs.tcl
+    format: tcl
+    package-require: {}
+  }
+}
+9829acca949760d244f148bb164cad820ed0f20d {
+  entity {
+    name: vfslib
+    shed_class: package
+    version: 1.4
+  }
+  meta {
+    class: package
+    file: vfslib.tcl
+  }
+}
+3dd33a5a02ba9630c887506d22f58631e310e81a {
+  entity {
+    name: vfslib.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/vfslib.tcl
+    format: tcl
+    package-provide: {vfslib 1.4}
+    package-require: {{Tcl 8.4}}
+  }
+  package/ {
+    9829acca949760d244f148bb164cad820ed0f20d
+  }
+}
+18bd5387db00aea7b3a29a4afe9a462f03a9abc7 {
+  entity {
+    name: vfs::urltype
+    shed_class: package
+    version: 1
+  }
+  meta {
+    class: package
+    file: vfsUrl.tcl
+  }
+}
+b95b73f8961520229f2331465f462cc2178817d1 {
+  entity {
+    name: vfsUrl.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/vfsUrl.tcl
+    format: tcl
+    package-provide: {vfs::urltype 1.0}
+    package-require: vfs
+  }
+  package/ {
+    18bd5387db00aea7b3a29a4afe9a462f03a9abc7
+  }
+}
+1e5b9915c40b4f8dad52af45c991e710839023c7 {
+  entity {
+    name: vfsUtils.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/vfsUtils.tcl
+    format: tcl
+    package-require: {{Tcl 8.4} vfs}
+  }
+}
+c26ead2e5e9d723d028214f27adea1fcc9d76ba9 {
+  entity {
+    name: vfs::webdav
+    shed_class: package
+    version: 0.1
+  }
+  meta {
+    class: package
+    file: webdavvfs.tcl
+  }
+}
+52608bd3d95d530654c88b7de093a7440360a36c {
+  entity {
+    name: webdavvfs.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/webdavvfs.tcl
+    format: tcl
+    package-provide: {vfs::webdav 0.1}
+    package-require: {base64 {http 2.6} {vfs 1.0}}
+  }
+  package/ {
+    c26ead2e5e9d723d028214f27adea1fcc9d76ba9
+  }
+}
+5abcf05fac2749ce3a523d7674f97d0e20bcb424 {
+  entity {
+    name: vfs::zip
+    shed_class: package
+    version: 1.0.4
+  }
+  meta {
+    class: package
+    file: zipvfs.tcl
+  }
+}
+d6d38c823536652b8f1bc212da389394c13ea67b {
+  entity {
+    name: zipvfs.tcl
+    shed_class: file
+    version: {}
+  }
+  meta {
+    class: script
+    file: library/zipvfs.tcl
+    format: tcl
+    package-provide: {vfs::zip 1.0.4}
+    package-require: vfs
+  }
+  package/ {
+    5abcf05fac2749ce3a523d7674f97d0e20bcb424
+  }
+}
