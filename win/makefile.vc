@@ -161,7 +161,7 @@ PROJECT = vfs
 
 # Uncomment the following line if this is a Tk extension.
 #PROJECT_REQUIRES_TK=1
-!include "rules2.vc"
+!include "rules.vc"
 
 DOTVERSION      = 1.4
 VERSION         = $(DOTVERSION:.=)
