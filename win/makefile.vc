@@ -18,7 +18,6 @@
 # Copyright (c) 2003-2008 Pat Thoyts
 #
 #-------------------------------------------------------------------------
-# RCS: @(#)$Id: makefile.vc,v 1.32 2009/05/30 17:00:52 patthoyts Exp $
 #-------------------------------------------------------------------------
 
 # Check to see we are configured to build with MSVC (MSDEVDIR or MSVCDIR)
@@ -162,7 +161,7 @@ PROJECT = vfs
 
 # Uncomment the following line if this is a Tk extension.
 #PROJECT_REQUIRES_TK=1
-!include "rules.vc"
+!include "rules2.vc"
 
 DOTVERSION      = 1.4
 VERSION         = $(DOTVERSION:.=)
@@ -239,7 +238,7 @@ cdebug	= $(OPTIMIZATIONS)
 !else
 cdebug	=
 !endif
-!else if "$(MACHINE)" == "IA64" #|| "$(MACHINE)" == "AMD64"
+!else if "$(MACHINE)" == "IA64" || "$(MACHINE)" == "AMD64"
 ### Warnings are too many, can't support warnings into errors.
 cdebug	= -Zi -Od $(DEBUGFLAGS)
 !else
@@ -286,7 +285,7 @@ STUB_CFLAGS     = $(cflags) $(cdebug:-GL=) #$(TK_DEFINES)
 #---------------------------------------------------------------------
 
 !if $(DEBUG)
-ldebug	= -debug
+ldebug	= -debug:full -debugtype:cv
 !if $(MSVCRT)
 ldebug = $(ldebug) -nodefaultlib:msvcrt
 !endif
@@ -326,9 +325,7 @@ baselibs  = $(baselibs) $(TKSTUBLIB)
 # Avoid 'unresolved external symbol __security_cookie' errors.
 # c.f. http://support.microsoft.com/?id=894573
 !if "$(MACHINE)" == "IA64" || "$(MACHINE)" == "AMD64"
-!if $(VCVERSION) >= 1400 && $(VCVERSION) < 1500
 baselibs   = $(baselibs) bufferoverflowU.lib
-!endif
 !endif
 
 !if exist("$(TCLDIR)\win\coffbase.txt")
