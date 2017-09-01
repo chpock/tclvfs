@@ -23,7 +23,6 @@
 #ifdef HAVE_SYS_STAT_H
 #  include <sys/stat.h>
 #endif
-#include <tcl.h>
 /* Required to access the 'stat' structure fields, and TclInExit() */
 #include "tclInt.h"
 #include "tclPort.h"
