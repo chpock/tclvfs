@@ -627,7 +627,6 @@ MAKE_STUB_LIB
 MAKE_STATIC_LIB
 MAKE_SHARED_LIB
 MAKE_LIB
-TCL_DBGX
 LDFLAGS_DEFAULT
 CFLAGS_DEFAULT
 LD_LIBRARY_PATH_VAR
@@ -3326,10 +3325,6 @@ $as_echo "loading" >&6; }
 $as_echo "could not find ${TCL_BIN_DIR}/tclConfig.sh" >&6; }
     fi
 
-    # eval is required to do the TCL_DBGX substitution
-    eval "TCL_LIB_FILE=\"${TCL_LIB_FILE}\""
-    eval "TCL_STUB_LIB_FILE=\"${TCL_STUB_LIB_FILE}\""
-
     # If the TCL_BIN_DIR is the build directory (not the install directory),
     # then set the common variable name to the value of the build variables.
     # For example, the variable TCL_LIB_SPEC will be set to the value
@@ -3362,12 +3357,6 @@ $as_echo "could not find ${TCL_BIN_DIR}/tclConfig.sh" >&6; }
 		;;
 	esac
     fi
-
-    # eval is required to do the TCL_DBGX substitution
-    eval "TCL_LIB_FLAG=\"${TCL_LIB_FLAG}\""
-    eval "TCL_LIB_SPEC=\"${TCL_LIB_SPEC}\""
-    eval "TCL_STUB_LIB_FLAG=\"${TCL_STUB_LIB_FLAG}\""
-    eval "TCL_STUB_LIB_SPEC=\"${TCL_STUB_LIB_SPEC}\""
 
 
 
@@ -6151,14 +6140,14 @@ fi
 		SHLIB_LD="/usr/ccs/bin/ld -G -z text"
 		if test "$GCC" = yes; then :
 
-		    CC_SEARCH_FLAGS='-Wl,-R,${LIB_RUNTIME_DIR}'
+		    CC_SEARCH_FLAGS='"-Wl,-R,${LIB_RUNTIME_DIR}"'
 
 else
 
-		    CC_SEARCH_FLAGS='-R${LIB_RUNTIME_DIR}'
+		    CC_SEARCH_FLAGS='"-R${LIB_RUNTIME_DIR}"'
 
 fi
-		LD_SEARCH_FLAGS='-R ${LIB_RUNTIME_DIR}'
+		LD_SEARCH_FLAGS='-R "${LIB_RUNTIME_DIR}"'
 
 else
 
@@ -6173,7 +6162,7 @@ else
 
 fi
 		SHLIB_LD="${SHLIB_LD} ${SHLIB_LD_FLAGS}"
-		CC_SEARCH_FLAGS='-L${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='"-L${LIB_RUNTIME_DIR}"'
 		LD_SEARCH_FLAGS=${CC_SEARCH_FLAGS}
 
 fi
@@ -6373,8 +6362,8 @@ fi
 		SHLIB_CFLAGS="+z"
 		SHLIB_LD="ld -b"
 		LDFLAGS="$LDFLAGS -Wl,-E"
-		CC_SEARCH_FLAGS='-Wl,+s,+b,${LIB_RUNTIME_DIR}:.'
-		LD_SEARCH_FLAGS='+s +b ${LIB_RUNTIME_DIR}:.'
+		CC_SEARCH_FLAGS='"-Wl,+s,+b,${LIB_RUNTIME_DIR}:."'
+		LD_SEARCH_FLAGS='+s +b "${LIB_RUNTIME_DIR}:."'
 		LD_LIBRARY_PATH_VAR="SHLIB_PATH"
 
 fi
@@ -6401,7 +6390,7 @@ fi
 			    SHLIB_LD='${CC} -shared'
 			    if test $doRpath = yes; then :
 
-				CC_SEARCH_FLAGS='-Wl,-rpath,${LIB_RUNTIME_DIR}'
+				CC_SEARCH_FLAGS='"-Wl,-rpath,${LIB_RUNTIME_DIR}"'
 fi
 			    LD_SEARCH_FLAGS=${CC_SEARCH_FLAGS}
 			    ;;
@@ -6470,8 +6459,8 @@ fi
 		SHLIB_LD="ld -b"
 		SHLIB_LD_LIBS=""
 		LDFLAGS="$LDFLAGS -Wl,-E"
-		CC_SEARCH_FLAGS='-Wl,+s,+b,${LIB_RUNTIME_DIR}:.'
-		LD_SEARCH_FLAGS='+s +b ${LIB_RUNTIME_DIR}:.'
+		CC_SEARCH_FLAGS='"-Wl,+s,+b,${LIB_RUNTIME_DIR}:."'
+		LD_SEARCH_FLAGS='+s +b "${LIB_RUNTIME_DIR}:."'
 		LD_LIBRARY_PATH_VAR="SHLIB_PATH"
 
 fi ;;
@@ -6487,8 +6476,8 @@ esac
 
 	    if test $doRpath = yes; then :
 
-		CC_SEARCH_FLAGS='-Wl,-rpath,${LIB_RUNTIME_DIR}'
-		LD_SEARCH_FLAGS='-rpath ${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='"-Wl,-rpath,${LIB_RUNTIME_DIR}"'
+		LD_SEARCH_FLAGS='-rpath "${LIB_RUNTIME_DIR}"'
 fi
 	    ;;
 	IRIX-6.*)
@@ -6497,8 +6486,8 @@ fi
 	    SHLIB_SUFFIX=".so"
 	    if test $doRpath = yes; then :
 
-		CC_SEARCH_FLAGS='-Wl,-rpath,${LIB_RUNTIME_DIR}'
-		LD_SEARCH_FLAGS='-rpath ${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='"-Wl,-rpath,${LIB_RUNTIME_DIR}"'
+		LD_SEARCH_FLAGS='-rpath "${LIB_RUNTIME_DIR}"'
 fi
 	    if test "$GCC" = yes; then :
 
@@ -6526,8 +6515,8 @@ fi
 	    SHLIB_SUFFIX=".so"
 	    if test $doRpath = yes; then :
 
-		CC_SEARCH_FLAGS='-Wl,-rpath,${LIB_RUNTIME_DIR}'
-		LD_SEARCH_FLAGS='-rpath ${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='"-Wl,-rpath,${LIB_RUNTIME_DIR}"'
+		LD_SEARCH_FLAGS='-rpath "${LIB_RUNTIME_DIR}"'
 fi
 
 	    # Check to enable 64-bit flags for compiler/linker
@@ -6575,7 +6564,7 @@ fi
 
 	    if test $doRpath = yes; then :
 
-		CC_SEARCH_FLAGS='-Wl,-rpath,${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='"-Wl,-rpath,${LIB_RUNTIME_DIR}"'
 fi
 	    LD_SEARCH_FLAGS=${CC_SEARCH_FLAGS}
 	    if test "`uname -m`" = "alpha"; then :
@@ -6640,8 +6629,8 @@ fi
 	    LD_FLAGS="-Wl,--export-dynamic"
 	    if test $doRpath = yes; then :
 
-		CC_SEARCH_FLAGS='-Wl,-rpath,${LIB_RUNTIME_DIR}'
-		LD_SEARCH_FLAGS='-Wl,-rpath,${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='"-Wl,-rpath,${LIB_RUNTIME_DIR}"'
+		LD_SEARCH_FLAGS='"-Wl,-rpath,${LIB_RUNTIME_DIR}"'
 fi
 	    ;;
 	OpenBSD-*)
@@ -6658,7 +6647,7 @@ fi
 	    SHLIB_SUFFIX=".so"
 	    if test $doRpath = yes; then :
 
-		CC_SEARCH_FLAGS='-Wl,-rpath,${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='"-Wl,-rpath,${LIB_RUNTIME_DIR}"'
 fi
 	    LD_SEARCH_FLAGS=${CC_SEARCH_FLAGS}
 	    SHARED_LIB_SUFFIX='${TCL_TRIM_DOTS}.so${SHLIB_VERSION}'
@@ -6680,7 +6669,7 @@ fi
 	    LDFLAGS="$LDFLAGS -export-dynamic"
 	    if test $doRpath = yes; then :
 
-		CC_SEARCH_FLAGS='-Wl,-rpath,${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='"-Wl,-rpath,${LIB_RUNTIME_DIR}"'
 fi
 	    LD_SEARCH_FLAGS=${CC_SEARCH_FLAGS}
 	    # The -pthread needs to go in the CFLAGS, not LIBS
@@ -6996,7 +6985,7 @@ fi
 	    SHLIB_SUFFIX=".so"
 	    if test $doRpath = yes; then :
 
-		CC_SEARCH_FLAGS='-Wl,-rpath,${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='"-Wl,-rpath,${LIB_RUNTIME_DIR}"'
 		LD_SEARCH_FLAGS='-rpath ${LIB_RUNTIME_DIR}'
 fi
 	    if test "$GCC" = yes; then :
@@ -7066,13 +7055,13 @@ $as_echo "#define _POSIX_PTHREAD_SEMANTICS 1" >>confdefs.h
 	    if test "$GCC" = yes; then :
 
 		SHLIB_LD='${CC} -shared'
-		CC_SEARCH_FLAGS='-Wl,-R,${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='"-Wl,-R,${LIB_RUNTIME_DIR}"'
 		LD_SEARCH_FLAGS=${CC_SEARCH_FLAGS}
 
 else
 
 		SHLIB_LD="/usr/ccs/bin/ld -G -z text"
-		CC_SEARCH_FLAGS='-R ${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='-R "${LIB_RUNTIME_DIR}"'
 		LD_SEARCH_FLAGS=${CC_SEARCH_FLAGS}
 
 fi
@@ -7172,7 +7161,7 @@ fi
 	    if test "$GCC" = yes; then :
 
 		SHLIB_LD='${CC} -shared'
-		CC_SEARCH_FLAGS='-Wl,-R,${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='"-Wl,-R,${LIB_RUNTIME_DIR}"'
 		LD_SEARCH_FLAGS=${CC_SEARCH_FLAGS}
 		if test "$do64bit_ok" = yes; then :
 
@@ -7209,8 +7198,8 @@ else
 		    *)
 			SHLIB_LD='/usr/ccs/bin/ld -G -z text';;
 		esac
-		CC_SEARCH_FLAGS='-Wl,-R,${LIB_RUNTIME_DIR}'
-		LD_SEARCH_FLAGS='-R ${LIB_RUNTIME_DIR}'
+		CC_SEARCH_FLAGS='"-Wl,-R,${LIB_RUNTIME_DIR}"'
+		LD_SEARCH_FLAGS='-R "${LIB_RUNTIME_DIR}"'
 
 fi
 	    ;;
@@ -7900,7 +7889,6 @@ else
   tcl_ok=no
 fi
 
-    DBGX=""
     if test "$tcl_ok" = "no"; then
 	CFLAGS_DEFAULT="${CFLAGS_OPTIMIZE} -DNDEBUG"
 	LDFLAGS_DEFAULT="${LDFLAGS_OPTIMIZE}"
@@ -7914,7 +7902,6 @@ $as_echo "no" >&6; }
 $as_echo "yes (standard debugging)" >&6; }
 	fi
     fi
-
 
 
 
@@ -8049,14 +8036,14 @@ $as_echo_n "checking for tclsh... " >&6; }
     if test -f "${TCL_BIN_DIR}/Makefile" ; then
         # tclConfig.sh is in Tcl build directory
         if test "${TEA_PLATFORM}" = "windows"; then
-          if test -f "${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}${TCL_DBGX}${EXEEXT}" ; then
-            TCLSH_PROG="${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}${TCL_DBGX}${EXEEXT}"
-          elif test -f "${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}${TCL_DBGX}s${EXEEXT}" ; then
-            TCLSH_PROG="${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}${TCL_DBGX}s${EXEEXT}"
-          elif test -f "${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}${TCL_DBGX}t${EXEEXT}" ; then
-            TCLSH_PROG="${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}${TCL_DBGX}t${EXEEXT}"
-          elif test -f "${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}${TCL_DBGX}st${EXEEXT}" ; then
-            TCLSH_PROG="${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}${TCL_DBGX}st${EXEEXT}"
+          if test -f "${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}${EXEEXT}" ; then
+            TCLSH_PROG="${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}${EXEEXT}"
+          elif test -f "${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}s${EXEEXT}" ; then
+            TCLSH_PROG="${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}s${EXEEXT}"
+          elif test -f "${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}t${EXEEXT}" ; then
+            TCLSH_PROG="${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}t${EXEEXT}"
+          elif test -f "${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}st${EXEEXT}" ; then
+            TCLSH_PROG="${TCL_BIN_DIR}/tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}st${EXEEXT}"
           fi
         else
             TCLSH_PROG="${TCL_BIN_DIR}/tclsh"
@@ -8064,9 +8051,9 @@ $as_echo_n "checking for tclsh... " >&6; }
     else
         # tclConfig.sh is in install location
         if test "${TEA_PLATFORM}" = "windows"; then
-            TCLSH_PROG="tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}${TCL_DBGX}${EXEEXT}"
+            TCLSH_PROG="tclsh${TCL_MAJOR_VERSION}${TCL_MINOR_VERSION}${EXEEXT}"
         else
-            TCLSH_PROG="tclsh${TCL_MAJOR_VERSION}.${TCL_MINOR_VERSION}${TCL_DBGX}"
+            TCLSH_PROG="tclsh${TCL_MAJOR_VERSION}.${TCL_MINOR_VERSION}"
         fi
         list="`ls -d ${TCL_BIN_DIR}/../bin 2>/dev/null` \
               `ls -d ${TCL_BIN_DIR}/..     2>/dev/null` \
