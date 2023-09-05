@@ -451,8 +451,6 @@ Vfs_UnregisterWithInterp(
     while (res == TCL_OK) {
         res = Vfs_RemoveMount(NULL, interp);
     }
-    /* Make sure our assoc data has been deleted */
-    Tcl_DeleteAssocData(interp, "vfs::inUse");
 }
 
 
