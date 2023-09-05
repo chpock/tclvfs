@@ -16,26 +16,26 @@ proc vfs::ftp::Mount {dirurl local} {
 	::vfs::log "ftp-vfs: adding missing directory delimiter to mount point"
 	append dirurl "/"
     }
-    
-    set urlRE {(?:ftp://)?(?:([^@:]*)(?::([^@]*))?@)?([^/:]+)(?::([0-9]*))?/(.*/)?$} 
+
+    set urlRE {(?:ftp://)?(?:([^@:]*)(?::([^@]*))?@)?([^/:]+)(?::([0-9]*))?/(.*/)?$}
     if {![regexp $urlRE $dirurl - user pass host port path]} {
 	return -code error "Sorry I didn't understand\
 	  the url address \"$dirurl\""
     }
-    
+
     if {![string length $user]} {
 	set user anonymous
     }
-    
+
     if {![string length $port]} {
 	set port 21
     }
-    
+
     set fd [::ftp::Open $host $user $pass -port $port -output ::vfs::ftp::log]
-    if {$fd == -1} {
+    if {$fd < 0} {
 	error "Mount failed"
     }
-    
+
     if {$path != ""} {
 	if {[catch {
 	    ::ftp::Cd $fd $path
@@ -44,7 +44,7 @@ proc vfs::ftp::Mount {dirurl local} {
 	    error "Opened ftp connection, but then received error: $err"
 	}
     }
-    
+
     if {![catch {vfs::filesystem info $dirurl}]} {
 	# unmount old mount
 	::vfs::log "ftp-vfs: unmounted old mount point at $dirurl"
@@ -91,7 +91,7 @@ proc vfs::ftp::stat {fd name} {
     }
     # get information on the type of this file
     set ftpInfo [_findFtpInfo $fd $name]
-    if {$ftpInfo == ""} { 
+    if {$ftpInfo == ""} {
 	vfs::filesystem posixerror $::vfs::posix(ENOENT)
     }
     ::vfs::log $ftpInfo
@@ -198,7 +198,7 @@ proc vfs::ftp::_findFtpInfo {fd name} {
 proc vfs::ftp::cachedList {fd dir} {
     variable cacheList
     variable cacheListingsFor
-    
+
     # Caches response to prevent going back to the ftp server
     # for common use cases: foreach {f} [glob *] { file stat $f s }
     if {[info exists cacheList($dir)]} {
@@ -212,7 +212,7 @@ proc vfs::ftp::cachedList {fd dir} {
 }
 
 # Currently returns a list of name and a list of other
-# information.  The other information is currently a 
+# information.  The other information is currently a
 # list of:
 # () permissions
 # () size
@@ -220,7 +220,7 @@ proc vfs::ftp::_parseListLine {line} {
     # Check for filenames with spaces
     if {[regexp {([^ ]|[^0-9] )+$} $line name]} {
 	# Check for links
-	if {[set idx [string first " -> " $name]] != -1} {
+	if {[set idx [string first " -> " $name]] >= 0} {
 	    incr idx -1
 	    set name [string range $name 0 $idx]
 	}
@@ -233,7 +233,7 @@ proc vfs::ftp::_parseListLine {line} {
     if {[string is integer [lindex $items 4]]} {
 	lappend other [lindex $items 4]
     }
-    
+
     return [list $name $other]
 }
 
@@ -264,8 +264,8 @@ proc vfs::ftp::matchindirectory {fd path actualpath pattern type} {
 	foreach p $ftpList {
 	    foreach {name perms} [_parseListLine $p] {}
 	    if {![string match $pattern $name]} {
-		continue 
-	    } 
+		continue
+	    }
 	    if {[::vfs::matchDirectories $type]} {
 		if {[string index $perms 0] == "d"} {
 		    lappend res [file join $actualpath $name]
@@ -276,10 +276,10 @@ proc vfs::ftp::matchindirectory {fd path actualpath pattern type} {
 		    lappend res [file join $actualpath $name]
 		}
 	    }
-	    
+
 	}
     }
- 
+
     return $res
 }
 

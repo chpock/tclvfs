@@ -6,7 +6,7 @@
 #
 # Copyright (c) 1998-2000 by Scriptics Corporation.
 # All rights reserved.
-# 
+#
 # RCS: @(#) $Id: all.tcl,v 1.3 2008/12/03 02:20:45 hobbs Exp $
 
 set tcltestVersion [package require tcltest]

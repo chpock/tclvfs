@@ -42,7 +42,7 @@ proc makepackage {pkgname} {
     if {![catch {package require installer}]} {
 	installer::mkIndex $pkgname
     }
-} 
+}
 
 
 array set files {
@@ -58,7 +58,7 @@ if [catch {open config.status} config] {
     error $config
 }
 
-while {[gets $config line] != -1} {
+while {[gets $config line] >= 0} {
     regexp -expanded {s(.)@vfs_LIB_FILE@\1(.*)\1} $line => sep files([platform])
 }
 close $config

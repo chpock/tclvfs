@@ -2,7 +2,6 @@
 # command or the tclkit zlib package with rechan to provide a memory channel
 # and a streaming decompression channel transform.
 
-package require Tcl 8.4; # vfs is all new for 8.4
 package provide vfslib 1.4
 
 # use zlib to define zip and crc if available
@@ -111,7 +110,7 @@ if {[info command ::chan] ne {}} {
                         return -code error "bad option \"$option\":\
                             should be one of -blocking, -buffering,\
                             -buffersize, -encoding, -eofchar, -translation,\
-                            -length or -allocated" 
+                            -length or -allocated"
                     }
                 }
             }
@@ -127,9 +126,9 @@ if {[info command ::chan] ne {}} {
                     if {![info exists watch]} { set watch {} }
                     set ndx [lsearch -exact $watch $chan]
                     if {$event in $eventspec} {
-                        if {$ndx == -1} { lappend watch $chan }
+                        if {$ndx < 0} { lappend watch $chan }
                     } else {
-                        if {$ndx != -1} {
+                        if {$ndx >= 0} {
                             set watch [lreplace $watch $ndx $ndx]
                         }
                     }
@@ -261,7 +260,7 @@ if {[info command rechan] ne "" || ![catch {load "" rechan}]} {
 
     variable ::vfs::zseq 0	;# used to generate temp zstream cmd names
 
-    # vfs::zstream -- 
+    # vfs::zstream --
     #
     #  Create a read-only seekable compressed channel using rechan and
     #  the streaming mode of tclkit's zlib extension.

@@ -12,7 +12,7 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
 
-if {[lsearch [namespace children] ::tcltest] == -1} {
+if {[lsearch [namespace children] ::tcltest] < 0} {
     package require tcltest 2
     namespace import ::tcltest::*
 }

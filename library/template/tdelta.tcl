@@ -13,11 +13,11 @@
 #	Returns a delta of the target file with respect to the reference file.
 #	i.e., using patch to apply the delta to the target file will re-create the reference file.
 #
-#	sizecheck and fingerprint are booleans which enable time-saving checks: 
+#	sizecheck and fingerprint are booleans which enable time-saving checks:
 #
 #	if sizecheck is True then if the file size is
 #	less than five times the block size, then no delta calculation is done and the
-#	signature contains the full reference file contents.  
+#	signature contains the full reference file contents.
 #
 #	if fingerprint is True then 10 small strings ("fingerprints") are taken from the target
 #	file and searched for in the reference file.  If at least three aren't found, then
@@ -70,7 +70,7 @@ proc ConstructFile {copyinstructions {eolNative 0} {backup {}}} {
 	array set dataInstructionArray [lindex $copyinstructions 5]
 	unset copyinstructions
 
-	if {[lsearch [file channels] $existingFile] == -1} {
+	if {[lsearch [file channels] $existingFile] < 0} {
 		set existingFile [FileNameNormalize $existingFile]
 		if {$fileToConstruct == {}} {file delete -force $existingFile ; return}
 		catch {
@@ -84,7 +84,7 @@ proc ConstructFile {copyinstructions {eolNative 0} {backup {}}} {
 
 	set temp $::trsync::temp
 
-	if {[lsearch [file channels] $fileToConstruct] == -1} {
+	if {[lsearch [file channels] $fileToConstruct] < 0} {
 		set fileToConstruct [FileNameNormalize $fileToConstruct]
 		set constructTag "trsync.[md5::md5 -hex "[clock seconds] [clock clicks]"]"
 		set constructID [open $temp/$constructTag w]
@@ -164,7 +164,7 @@ proc ConstructFile {copyinstructions {eolNative 0} {backup {}}} {
 proc CopyInstructions {filename digest} {
 	if [catch {package present md5 2}] {package forget md5 ; package require md5 2}
 
-	if {[lsearch [file channels] $filename] == -1} {
+	if {[lsearch [file channels] $filename] < 0} {
 		set filename [FileNameNormalize $filename]
 		file stat $filename fileStats
 		array set fileAttributes [file attributes $filename]
@@ -279,7 +279,7 @@ proc Digest {filename blockSize {sizecheck 0} {fingerprint 0}} {
 	if [catch {package present md5 2}] {package forget md5 ; package require md5 2}
 
 	set digest "[list $filename] $blockSize"
-	if {[lsearch [file channels] $filename] == -1} {
+	if {[lsearch [file channels] $filename] < 0} {
 		set filename [FileNameNormalize $filename]
 		set digest "[list $filename] $blockSize"
 		if {!([file isfile $filename] && [file readable $filename])} {return $digest}

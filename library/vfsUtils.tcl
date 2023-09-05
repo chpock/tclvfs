@@ -2,7 +2,6 @@
 #
 # $Id: vfsUtils.tcl,v 1.28 2009/01/22 16:03:58 patthoyts Exp $
 
-package require Tcl 8.4
 package require vfs
 
 namespace eval ::vfs {
@@ -69,9 +68,9 @@ proc vfs::states {} {
 # vfs::attributes mountpoint ?-opt val? ?...-opt val?
 proc ::vfs::attributes {mountpoint args} {
     set handler [::vfs::filesystem info $mountpoint]
-    
+
     set res {}
-    
+
     if {[regsub -- "::handler" $handler ::attributes cmd]} {
 	set attrs [eval $cmd]
     } else {
@@ -90,7 +89,7 @@ proc ::vfs::attributes {mountpoint args} {
 	}
 	return $res
     }
-    
+
     while {[llength $args] > 1} {
 	set attr [string range [lindex $args 0] 1 end]
 	set val [lindex $args 1]
@@ -178,10 +177,10 @@ proc ::vfs::tclprocMount {url args} {
 
 proc ::vfs::auto {filename args} {
     variable extMounts
-    
+
     set np {}
     set split [::file split $filename]
-    
+
     foreach ele $split {
 	lappend np $ele
 	set path [::file normalize [eval [list ::file join] $np]]

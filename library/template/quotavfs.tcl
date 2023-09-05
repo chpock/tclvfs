@@ -13,22 +13,22 @@ Quotas can be set on any quantity returned by "file stat" or "file attributes",
 plus the attribute "filename", which is the fully normalized pathname of the file.
 
 Two types of quota can be set: an incremented count of files matching a certain criterion, and
-a running total of a certain quantity.  Each quota is defined by a set of switches composing 
+a running total of a certain quantity.  Each quota is defined by a set of switches composing
 a "quota group," any number of quota groups can be defined.  A file must fit within all quotas defined
 to avoid triggering quota enforcement.
 
 The quotas are enforced as a FIFO stack of files; that is, if a new file is copied to the vfs whose
-attributes exceed a quota, the file is not rejected, rather, the already present files with 
-the oldest access times that contribute to the quota are deleted until there is room within 
+attributes exceed a quota, the file is not rejected, rather, the already present files with
+the oldest access times that contribute to the quota are deleted until there is room within
 the quota limit for the addition of the new file.
 
-The exception for the running total variety is if the file's attribute is large enough to 
-exceed the quota by itself, it is barred without first deleting all other files contributing to 
+The exception for the running total variety is if the file's attribute is large enough to
+exceed the quota by itself, it is barred without first deleting all other files contributing to
 the quota.
 
 At mount time, all files in the existing directory are examined and quotas calculated.  Files may be
-deleted to keep quotas under their defined limits.  After mount, when a new file is moved into the 
-virtual directory or an existing file edited, its properties are examined with respect to the defined 
+deleted to keep quotas under their defined limits.  After mount, when a new file is moved into the
+virtual directory or an existing file edited, its properties are examined with respect to the defined
 quotas; if no room can be made for it, the move or edit is rejected.
 
 Usage: mount <quota group> ?<quota group>... ? <existing directory> <virtual directory>
@@ -44,27 +44,27 @@ Options:
 -<quantity>
 Where <quantity> is any item returned by the "file stat" or "file attributes" commands, with the dash
 prepended as needed, for example: -archive, -permissions, -size, -mtime etc.  The attribute "filename"
-is assumed to exist as well, defined as the file's full pathname.  The quantity need not exist, so the 
+is assumed to exist as well, defined as the file's full pathname.  The quantity need not exist, so the
 same command line could be used on Unix or Windows, for example.  Nonexistent quantities have no effect
 and are ignored.
 
 <rule>
-The rule is the criterion a file must meet to have the quota applied to it.  It may take the form of a 
-list of glob patterns as used by the "string match" command: if the quantity value matches all the 
-patterns, the quota is applied.  The rule may be Tcl code, to which the quantity value will be 
-appended and then evaluated.  The code should return 1 if the file is judged to meet the 
-quota criterion, or 0 if not.  If glob patterns are used, each pattern in the list may, in 
-addition to symbols used by "string match", have a "!" prepended to it, which will negate the 
+The rule is the criterion a file must meet to have the quota applied to it.  It may take the form of a
+list of glob patterns as used by the "string match" command: if the quantity value matches all the
+patterns, the quota is applied.  The rule may be Tcl code, to which the quantity value will be
+appended and then evaluated.  The code should return 1 if the file is judged to meet the
+quota criterion, or 0 if not.  If glob patterns are used, each pattern in the list may, in
+addition to symbols used by "string match", have a "!" prepended to it, which will negate the
 sense of the match.
 
 -quota
-If the quota group contains this switch, then the vfs will keep a running count of all files that satisfy 
-the quota group's rule.  It will not allow more than the number of files specified in <quota number> to 
+If the quota group contains this switch, then the vfs will keep a running count of all files that satisfy
+the quota group's rule.  It will not allow more than the number of files specified in <quota number> to
 exist in the virtual file space.
 
 -total
 If the quota group contains this switch, then the vfs will track the sum of the values of the specified
-quantity of all files.  It will not allow the sum specified in <quota number> to 
+quantity of all files.  It will not allow the sum specified in <quota number> to
 be exceeded in the virtual file space.
 
 -ruletotal
@@ -290,7 +290,7 @@ proc QuotaAdd {fileName} {
 
 	set delete 1
 if [info exists fstat] {
-	array set fs $fstat	
+	array set fs $fstat
 } else {
 	set noexist [catch {file stat $fileName fs}]
 	if $noexist {return 0}
@@ -310,7 +310,7 @@ if [info exists fstat] {
 		if ![info exists fs($item)] {if [file exists $fileName] {array set fs [file attributes $fileName]}}
 		if ![info exists fs($item)] {continue}
 		set contrib [eval $quotaArray($groupCount,$item,rule) [list $fs($item)]]
-		if $contrib	{	
+		if $contrib	{
 			if {$quotaArray($groupCount,$item,type) == "total"} {
 
 				# If file quantity by itself would violate quota, reject immediately:
@@ -358,7 +358,7 @@ if $delete {puts "$fileName deleted: $result"}
 				if {[lsearch -exact $::vfs::template::quota::atimes($root) $afile] < 0} {unset ::vfs::template::quota::files($afile)}
 				continue
 			}
-			
+
 			# if file from queue is in fact newer than given file, skip it:
 			if {$atime > $fs(atime)} {continue}
 
@@ -380,9 +380,9 @@ if $delete {puts "$fileName deleted: $result"}
 				file stat $afile iv
 				set itm_val $iv($itm)
 			}
-	
+
 			set contrib [eval $quotaArray($item,rule) [list $itm_val]]
-			if $contrib	{	
+			if $contrib	{
 				if {$quotaArray($item,type) == "total"} {
 					set itm [lindex [split $item ,] 1]
 					if {[string index $itm 0] == "-"} {
@@ -416,7 +416,7 @@ proc QuotaDelete {fileName {delete 1}} {
 # Must parse contents twice, eliminate files first, then dirs:
 	foreach file [concat $files //// $files] {
 		if {$file == "////"} {set type directory ; continue}
-	
+
 		# cache quantity info to save time on second pass:
 		if ![info exists stat($file)] {
 			file stat $file fs
@@ -480,17 +480,17 @@ proc ParseArgs {argsStore args} {
 # break group defs into separate categories:
 	foreach qp $qPosition {
 		incr qp
-		append quotas " [lrange $args [expr $qp - 3] $qp]" 
+		append quotas " [lrange $args [expr $qp - 3] $qp]"
 	}
 
 	foreach tp $tPosition {
 		incr tp
-		append totals " [lrange $args [expr $tp - 2] $tp]" 
+		append totals " [lrange $args [expr $tp - 2] $tp]"
 	}
 
 	foreach rp $rPosition {
 		incr rp
-		append rtotals " [lrange $args [expr $rp - 3] $rp]" 
+		append rtotals " [lrange $args [expr $rp - 3] $rp]"
 	}
 
 # cast each category into old syntax:

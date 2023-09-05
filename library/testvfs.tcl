@@ -45,7 +45,7 @@ proc vfs::test::matchindirectory {what path pattern type} {
     if {[::vfs::matchDirectories $type]} {
 	# add matching directories to $res
     }
-    
+
     if {[::vfs::matchFiles $type]} {
 	# add matching files to $res
     }

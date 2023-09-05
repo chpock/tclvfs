@@ -25,7 +25,7 @@ package ifneeded vfs::tk      0.5 [list source [file join $dir tkvfs.tcl]]
 #
 # Virtual filesystems based on the template vfs:
 #
-if {[lsearch -exact $::auto_path [file join $dir template]] == -1} {
+if {[lsearch -exact $::auto_path [file join $dir template]] < 0} {
     lappend ::auto_path [file join $dir template]
 }
 package ifneeded vfs::template::chroot 1.5.2 \

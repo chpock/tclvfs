@@ -13,7 +13,7 @@ dnl	to configure the system for the local environment.
 #    http://www.tcl.tk/           Tcl Developer Exchange
 #--------------------------------------------------------------------
 
-AC_INIT([vfs], [1.4.2])
+AC_INIT([vfs],[1.4.2])
 
 #--------------------------------------------------------------------
 # Call TEA_INIT as the first TEA_ macro to set up initial vars.
@@ -80,4 +80,5 @@ TEA_MAKE_LIB
 
 TEA_PROG_TCLSH
 
-AC_OUTPUT([Makefile pkgIndex.tcl library/vfs.tcl])
+AC_CONFIG_FILES([Makefile pkgIndex.tcl library/vfs.tcl])
+AC_OUTPUT

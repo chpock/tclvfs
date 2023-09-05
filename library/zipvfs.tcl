@@ -109,7 +109,7 @@ proc vfs::zip::access {zipfd name mode} {
     } else {
 	error "No such file"
     }
-    
+
 }
 
 proc vfs::zip::open {zipfd name mode permissions} {
@@ -125,10 +125,10 @@ proc vfs::zip::open {zipfd name mode permissions} {
 	    if {![::zip::exists $zipfd $name]} {
 		vfs::filesystem posixerror $::vfs::posix(ENOENT)
 	    }
-	    
+
 	    ::zip::stat $zipfd $name sb
 
-            if {$sb(ino) == -1} {
+            if {$sb(ino) < 0} {
                 vfs::filesystem posixerror $::vfs::posix(EISDIR)
             }
 
@@ -456,7 +456,7 @@ proc zip::EndOfArchive {fd arr} {
 	# confuse the unmodified code, triggering on the magic
 	# sequence for the inner, uncompressed archive.
 	set pos [string last "PK\05\06" $hdr]
-	if {$pos == -1} {
+	if {$pos < 0} {
 	    if {$at >= $sz} {
 		return -code error "no header found"
 	    }
@@ -470,9 +470,9 @@ proc zip::EndOfArchive {fd arr} {
 
      set hdrlen [string length $hdr]
      set hdr [string range $hdr [expr $pos + 4] [expr $pos + 21]]
- 
+
      set pos [expr {wide([tell $fd]) + $pos - $hdrlen}]
- 
+
      if {$pos < 0} {
          set pos 0
      }
@@ -555,26 +555,26 @@ proc zip::TOC {fd arr} {
 proc zip::open {path} {
     #vfs::log [list open $path]
     set fd [::open $path]
-    
+
     if {[catch {
 	upvar #0 zip::$fd cb
 	upvar #0 zip::$fd.toc toc
 	upvar #0 zip::$fd.dir cbdir
 
 	fconfigure $fd -translation binary ;#-buffering none
-	
+
 	zip::EndOfArchive $fd cb
 
 	seek $fd [expr {$cb(base) + $cb(coff)}] start
 
 	set toc(_) 0; unset toc(_); #MakeArray
-	
+
 	for {set i 0} {$i < $cb(nitems)} {incr i} {
 	    zip::TOC $fd sb
-	    
+
 	    set origname [string trimright $sb(name) /]
 	    set sb(depth) [llength [file split $sb(name)]]
-	    
+
 	    set name [string tolower $origname]
 	    set sba [array get sb]
 	    set toc($name) $sba
@@ -603,7 +603,7 @@ proc zip::FAKEDIR {tocarr cbdirarr origpath} {
 		name $origpath \
 		type directory mtime 0 size 0 mode 0777 \
 		ino -1 depth [llength [file split $path]]
-	
+
 	set parent [file dirname $path]
 	if {$parent == "."} {set parent ""}
 	lappend cbdir($parent) [file tail $origpath]
@@ -629,7 +629,7 @@ proc zip::stat {fd path arr} {
     set name [string tolower $path]
     if { $name == "" || $name == "." } {
 	array set sb {
-	    type directory mtime 0 size 0 mode 0777 
+	    type directory mtime 0 size 0 mode 0777
 	    ino -1 depth 0 name ""
 	}
     } elseif {![info exists toc($name)] } {

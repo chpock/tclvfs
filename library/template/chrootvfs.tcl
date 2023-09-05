@@ -19,11 +19,11 @@ or that of the "open" command when its command pipeline syntax is used.
 
 At the end of this file is example code showing one way to set up a safe slave interpreter suitable for
 running a process safely with limited filesystem access: its file access commands are re-enabled, the exec
-command remains disabled, the open command is aliased so that it can only open files and can't spawn new 
-processes, and mounted volumes besides the volume on which the chroot directory resides are aliased so 
+command remains disabled, the open command is aliased so that it can only open files and can't spawn new
+processes, and mounted volumes besides the volume on which the chroot directory resides are aliased so
 that they act as mirrors of the chroot directory.
 
-Such an interpreter should be advantageous for applications such as a web server: which requires some 
+Such an interpreter should be advantageous for applications such as a web server: which requires some
 filesystem access but presents security threats that make access limitations desirable.
 
  Install: This code requires the vfs::template package included in the Tclvfs distribution.
@@ -88,7 +88,7 @@ proc chroot_slave {} {
 		::vfs::template::mount C:/ $vol
 	}
 	set slave [interp create -safe]
-	$slave expose cd  
+	$slave expose cd
 	$slave expose encoding
 	$slave expose fconfigure
 	$slave expose file

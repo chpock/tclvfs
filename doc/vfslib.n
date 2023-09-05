@@ -1,7 +1,7 @@
 '\"
 '\" Copyright (c) 2001, Vince Darley
-'\" 
-'\" 
+'\"
+'\"
 .so man.macros
 .TH vfslib n 1.0 Vfslib "Tcl-only Virtual File Systems"
 .BS
@@ -11,7 +11,7 @@
 .SH SYNOPSIS
 .BS
 .sp
-\fBpackage require Tcl 8.4\fR
+\fBpackage require Tcl\fR
 .sp
 \fBpackage require vfs ?1.2.1?\fR
 .sp

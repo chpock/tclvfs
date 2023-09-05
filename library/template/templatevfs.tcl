@@ -9,14 +9,14 @@ Written by Stephen Huntley (stephen.huntley@alum.mit.edu)
 License: Tcl license
 Version 1.5.4
 
-The template virtual filesystem is designed as a prototype on which to build new virtual 
+The template virtual filesystem is designed as a prototype on which to build new virtual
 filesystems.  Only a few simple, abstract procedures have to be overridden to produce a new
-vfs, requiring no knowledge of the Tclvfs API. 
+vfs, requiring no knowledge of the Tclvfs API.
 
 In addition, several behind-the-scenes functions are provided to make new vfs's more stable and
-scalable, including file information caching and management of close callback errors. 
+scalable, including file information caching and management of close callback errors.
 
-The template vfs provides a useful function of its own, it mirrors a real directory to a 
+The template vfs provides a useful function of its own, it mirrors a real directory to a
 virtual location, analogous to a Unix-style link.
 
 Usage: mount ?-cache <number>? ?-volume? <existing directory> <virtual directory>
@@ -24,8 +24,8 @@ Usage: mount ?-cache <number>? ?-volume? <existing directory> <virtual directory
 Options:
 
 -cache
-Sets number of seconds file stat and attributes information will dwell in cache after 
-being retrieved.  Default is 2.  Setting value of 0 will essentially disable caching.  This 
+Sets number of seconds file stat and attributes information will dwell in cache after
+being retrieved.  Default is 2.  Setting value of 0 will essentially disable caching.  This
 value is viewable and editable after mount by calling "file attributes <virtual directory> -cache ?value?"
 
 -volume
@@ -33,7 +33,7 @@ Volume specified in virtual directory pathname will be mounted as a virtual volu
 
 The above options are inherited by all virtual filesystems built using the template.
 
-Side effects: Files whose names begin with ".vfs_" will be ignored and thus invisible to the 
+Side effects: Files whose names begin with ".vfs_" will be ignored and thus invisible to the
 user unless the variable ::vfs::template::vfs_retrieve exists.
 
 Sourcing this file will run code that overloads the exit command with
@@ -49,7 +49,7 @@ by executing "eval" on the contents of the array element whose index is the vfs'
 
 package require vfs 1.0
 
-# force sourcing of vfsUtils.tcl: 
+# force sourcing of vfsUtils.tcl:
 set vfs::posix(load) x
 vfs::posixError load
 unset vfs::posix(load)
@@ -66,7 +66,7 @@ In order to create a new virtual filesystem:
 1. copy the contents of this namespace eval statement to a
 new namespace eval statement with a unique new namespace defined
 
-2. rewrite the copied procedures to retrieve and handle virtual filesystem 
+2. rewrite the copied procedures to retrieve and handle virtual filesystem
 information as desired and return it in the same format as the given native
 file commands.
 
@@ -155,7 +155,7 @@ proc mount {args} {
 # handle template command line args:
 	set volume [lindex $args [lsearch $args "-volume"]]
 	set cache 2
-	if {[set cacheIndex [lsearch $args "-cache"]] != -1} {set cache [lindex $args [incr cacheIndex]]}
+	if {[set cacheIndex [lsearch $args "-cache"]] >= 0} {set cache [lindex $args [incr cacheIndex]]}
 	set args [string map "\" -volume \" { } \" -cache $cache \" { }" " $args "]
 # run unmount procedure if mount exists:
 	set to [lindex $args end]
@@ -178,7 +178,7 @@ proc mount {args} {
 	set ::vfs::template::mount($to) "[namespace current]::mount $volume -cache $cache $args"
 
 # if virtual location still mounted, unmount it by force:
-	if {[lsearch [::vfs::filesystem info] $to] != -1} {::vfs::filesystem unmount $to}
+	if {[lsearch [::vfs::filesystem info] $to] >= 0} {::vfs::filesystem unmount $to}
 	array unset ::vfs::_unmountCmd $to
 
 # set file info cache dwell time value:
@@ -415,7 +415,7 @@ proc MatchInDirectory {path root relative actualpath pattern types} {
 # convert types bitstring back to human-readable alpha string:
 	foreach {type shift} {b 0 c 1 d 2 p 3 f 4 l 5 s 6} {
 		if [expr {$types == 0 ? 1 : $types & (1<<$shift)}] {lappend typeString $type}
-	}	
+	}
 	set pathName [::file join $path $relative]
 
 # get non-hidden files:
@@ -460,7 +460,7 @@ proc Utime {path root relative actualpath atime mtime} {
 	file_mtime $fileName $mtime
 }
 
-# check value of ::errorInfo to ensure close callback didn't generate background 
+# check value of ::errorInfo to ensure close callback didn't generate background
 # error; if it did, force error break.
 proc CloseTrace {commandString code result op} {
 	if {[info exists ::vfs::template::vfs_error] && ($::vfs::template::vfs_error != {})} {
@@ -499,11 +499,11 @@ proc InterpSeed {interp args} {
 	$interp alias ::vfs::template::closeerror ::vfs::template::closeerror
 	$interp alias ::vfs::template::FileTrace ::vfs::template::FileTrace
 	$interp alias ::vfs::template::CloseTrace ::vfs::template::CloseTrace
-	interp eval $interp trace remove execution ::file leave ::vfs::template::FileTrace 
-	interp eval $interp trace remove execution ::close leave ::vfs::template::CloseTrace 
+	interp eval $interp trace remove execution ::file leave ::vfs::template::FileTrace
+	interp eval $interp trace remove execution ::close leave ::vfs::template::CloseTrace
 
 	interp eval $interp trace add execution ::close leave ::vfs::template::CloseTrace
-	interp eval $interp trace add execution ::file leave ::vfs::template::FileTrace 
+	interp eval $interp trace add execution ::file leave ::vfs::template::FileTrace
 
 	interp eval $interp $args
 	foreach int [interp slaves $interp] {
@@ -565,16 +565,16 @@ proc memchan {args} {
 }
 # end namespace eval ::vfs::template
 
-# overload exit command so that all vfs's are explicitly 
+# overload exit command so that all vfs's are explicitly
 # unmounted before program termination:
- 
+
 catch {rename ::exit ::vfs::template::exit}
 
 proc ::exit {args} {
     foreach vfs [::vfs::filesystem info] {
 	if [catch {$::vfs::_unmountCmd([file normalize $vfs]) $vfs} result] {
 	    puts "$vfs: $result"
-	}		
+	}
     }
     if {![llength $args]} { lappend args 0}
     ::vfs::template::exit [lindex $args 0]

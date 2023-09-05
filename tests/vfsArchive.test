@@ -12,7 +12,7 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
 
-if {[lsearch [namespace children] ::tcltest] == -1} {
+if {[lsearch [namespace children] ::tcltest] < 0} {
     package require tcltest
     namespace import ::tcltest::*
 }
@@ -37,7 +37,7 @@ proc makeAndMountZipArchive {} {
     eval [list exec zip -q -9 [file join tests tests.zip]] $filelist
     puts stdout "Done zipping"
     cd [file dirname [info script]]
-    
+
     package require vfs::zip
     set mount [vfs::zip::Mount tests.zip tests.zip]
     #puts "[pwd] ; $::auto_path, [glob *]"
@@ -53,7 +53,7 @@ proc makeAndMountMk4Archive {} {
     exec sdx fs2sd tests
     puts stdout "Done making mk4 archive"
     cd [file dirname [info script]]
-    
+
     package require vfs::mk4
     set mount [vfs::mk4::Mount tests.bin tests.bin]
     cd tests.bin

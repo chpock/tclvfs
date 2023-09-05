@@ -7,7 +7,7 @@
 #
 # Jan 13 2003: Stefan Vogel (stefan.vogel@avinci.de)
 # (reformatted to tabsize 8 by Vince).
-# 
+#
 # TODOs:
 # * add writable access (should be easy with tar-files)
 # * add gzip-support (?)
@@ -18,7 +18,7 @@ package require vfs
 package provide vfs::tar 0.91
 
 # Using the vfs, memchan and Trf extensions, we're able
-# to write a Tcl-only tar filesystem.  
+# to write a Tcl-only tar filesystem.
 
 namespace eval vfs::tar {}
 
@@ -251,13 +251,13 @@ proc vfs::tar::TOC {fd arr toc} {
     variable aTypeFlag
     variable HEADER_SIZE
     variable BLOCK_SIZE
-    
+
     upvar 1 $arr sb
     upvar 1 $toc _toc
-    
+
     set pos 0
     set sb(nitems) 0
-    
+
     # loop through file in blocks of BLOCK_SIZE
     while {![eof $fd]} {
 	seek $fd $pos
@@ -336,7 +336,7 @@ proc vfs::tar::TOC {fd arr toc} {
 
 proc vfs::tar::_open {path} {
     set fd [::open $path]
-    
+
     if {[catch {
 	upvar #0 vfs::tar::$fd.toc toc
 	fconfigure $fd -translation binary ;#-buffering none
@@ -345,7 +345,7 @@ proc vfs::tar::_open {path} {
 	close $fd
 	return -code error $err
     }
-    
+
     return $fd
 }
 
@@ -365,7 +365,7 @@ proc vfs::tar::_stat {fd path arr} {
 
     if { $path == "" || $path == "." } {
 	array set sb {
-	    type directory mtime 0 size 0 mode 0777 
+	    type directory mtime 0 size 0 mode 0777
 	    ino -1 depth 0 name ""
 	}
     } elseif {![info exists toc($path)] } {
@@ -387,7 +387,7 @@ proc vfs::tar::_stat {fd path arr} {
 # Directly copied from zipvfs.
 proc vfs::tar::_getdir {fd path {pat *}} {
     upvar #0 vfs::tar::$fd.toc toc
-    
+
     if { $path == "." || $path == "" } {
 	set path $pat
     } else {
@@ -397,7 +397,7 @@ proc vfs::tar::_getdir {fd path {pat *}} {
 	}
     }
     set depth [llength [file split $path]]
-    
+
     if {$depth} {
 	set ret {}
 	foreach key [array names toc $path] {

@@ -24,31 +24,31 @@ proc vfs::webdav::Mount {dirurl local} {
 	set rest $dirurl
 	set dirurl "http://${dirurl}"
     }
-    
+
     if {![regexp {(([^:]*)(:([^@]*))?@)?([^/]*)(/(.*/)?([^/]*))?$} $rest \
 	    junk junk user junk pass host junk path file]} {
 	return -code error "Sorry I didn't understand\
 	  the url address \"$dirurl\""
     }
-    
+
     if {[string length $file]} {
 	return -code error "Can only mount directories, not\
 	  files (perhaps you need a trailing '/' - I understood\
 	  a path '$path' and file '$file')"
     }
-    
+
     if {![string length $user]} {
 	set user anonymous
     }
-    
+
     set dirurl "http://$host/$path"
-    
+
     set extraHeadersList [list Authorization \
 	    [list Basic [base64::encode ${user}:${pass}]]]
 
     set token [::http::geturl $dirurl -headers $extraHeadersList -validate 1]
     http::cleanup $token
-    
+
     if {![catch {vfs::filesystem info $dirurl}]} {
 	# unmount old mount
 	::vfs::log "ftp-vfs: unmounted old mount point at $dirurl"
@@ -80,8 +80,8 @@ proc vfs::webdav::handler {dirurl extraHeadersList path cmd root relative actual
 
 proc vfs::webdav::stat {dirurl extraHeadersList name} {
     ::vfs::log "stat $name"
-    
-    # get information on the type of this file.  
+
+    # get information on the type of this file.
     if {$name == ""} {
 	set mtime 0
 	lappend res type directory
@@ -89,7 +89,7 @@ proc vfs::webdav::stat {dirurl extraHeadersList name} {
 	  atime $mtime ctime $mtime mtime $mtime mode 0777
 	return $res
     }
-    
+
     # This is a bit of a hack.  We really want to do a 'PROPFIND'
     # request with depth 0, I believe.  I don't think Tcl's http
     # package supports that.
@@ -103,14 +103,14 @@ proc vfs::webdav::stat {dirurl extraHeadersList name} {
 	::http::cleanup $token
 	error "Not found"
     }
-    
+
     regexp {<D:prop>(.*)</D:prop>} [::http::data $token] -> properties
     if {[regexp {<D:resourcetype><D:collection/>} $properties]} {
 	set type directory
     } else {
 	set type file
     }
-    
+
     #parray state
     set mtime 0
 
@@ -186,7 +186,7 @@ proc vfs::webdav::matchindirectory {dirurl extraHeadersList path actualpath patt
 	while {1} {
 	    set start [string first "<D:response" $body]
 	    set end [string first "</D:response" $body]
-	    if {$start == -1 || $end == -1} { break }
+	    if {$start < 0 || $end < 0} { break }
 	    set item [string range $body $start $end]
 	    set body [string range $body [expr {$end + 12}] end]
 	    if {![regexp "<D:href>(.*)</D:href>" $item -> name]} {
@@ -211,7 +211,7 @@ proc vfs::webdav::matchindirectory {dirurl extraHeadersList path actualpath patt
 	# single file
 	set token [::http::geturl $dirurl$path -method PROPFIND \
 	  -headers [concat $extraHeadersList [list Depth 0]]]
-	
+
 	upvar #0 $token state
 	if {![regexp " (OK|Multi\\-Status)$" $state(http)]} {
 	    ::vfs::log "No good: $state(http)"
@@ -222,10 +222,10 @@ proc vfs::webdav::matchindirectory {dirurl extraHeadersList path actualpath patt
 	set body [::http::data $token]
 	::http::cleanup $token
 	#::vfs::log $body
-	
+
 	eval lappend res [_matchtypes $body $actualpath $type]
     }
-    
+
     return $res
 }
 

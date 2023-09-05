@@ -28,7 +28,7 @@ if {[info exists env(VFS_DEBUG)] && [info commands history] == ""} {
 
 namespace eval vfs::mk4 {
     proc Mount {mkfile local args} {
-        # 2005-10-19 switch to MK Compatible Lite driver if there is no Mk4tcl 
+        # 2005-10-19 switch to MK Compatible Lite driver if there is no Mk4tcl
 	if {[catch { package require Mk4tcl }]} {
 	  package require vfs::mkcl
 	  return [eval [linsert $args 0 vfs::mkcl::Mount $mkfile $local]]
@@ -54,7 +54,7 @@ namespace eval vfs::mk4 {
     }
 
     proc attributes {db} { return [list "state" "commit"] }
-    
+
     # Can use this to control commit/nocommit or whatever.
     # I'm not sure yet of what functionality jcw needs.
     proc commit {db args} {
@@ -80,7 +80,7 @@ namespace eval vfs::mk4 {
 	    }
 	}
     }
-    
+
     proc state {db args} {
 	switch -- [llength $args] {
 	    0 {
@@ -88,7 +88,7 @@ namespace eval vfs::mk4 {
 	    }
 	    1 {
 		set val [lindex $args 0]
-		if {[lsearch -exact [::vfs::states] $val] == -1} {
+		if {[lsearch -exact [::vfs::states] $val] < 0} {
 		    return -code error \
 		      "invalid state $val, must be one of: [vfs::states]"
 		}
@@ -100,7 +100,7 @@ namespace eval vfs::mk4 {
 	    }
 	}
     }
-    
+
     proc handler {db cmd root relative actualpath args} {
 	#puts stderr "handler: $db - $cmd - $root - $relative - $actualpath - $args"
 	if {$cmd == "matchindirectory"} {
@@ -114,7 +114,7 @@ namespace eval vfs::mk4 {
 
     proc utime {db path actime modtime} {
 	::mk4vfs::stat $db $path sb
-	
+
 	if { $sb(type) == "file" } {
 	    mk::set $sb(ino) date $modtime
 	}
@@ -305,7 +305,7 @@ namespace eval mk4vfs {
 
     namespace eval v {
 	variable seq      0
-	variable mode	    ;# array key is db, value is mode 
+	variable mode	    ;# array key is db, value is mode
 	             	     # (readwrite/translucent/readonly)
 	variable timer	    ;# array key is db, set to afterid, periodicCommit
 
@@ -333,9 +333,9 @@ namespace eval mk4vfs {
 	    set v::mode($db) "translucent"
 	} else {
 	    eval [list mk::file open $db $file] $args
-	    
+
 	    init $db
-	    
+
 	    set mode 0
 	    foreach arg $args {
 		switch -- $arg {
@@ -387,10 +387,10 @@ namespace eval mk4vfs {
 		set parent $row
 	    }
 	}
-	
+
 	# Now check if final comp is a directory or a file
 	# CACHING is required - it can deliver a x15 speed-up!
-	
+
 	if { [string equal $tail "."] || [string equal $tail ":"] \
 	  || [string equal $tail ""] } {
 	    set row $parent
@@ -414,7 +414,7 @@ namespace eval mk4vfs {
 	    set row [lsearch -exact $v::fcache($fview) $tail]
 	    #set row [mk::select $fview -count 1 name $tail]
 	    #if {$row == ""} { set row -1 }
-	    if { $row != -1 } {
+	    if { $row >= 0 } {
 		set type file
 		set view $view!$parent.files
 	    } else {
@@ -422,17 +422,17 @@ namespace eval mk4vfs {
 		set row [mk::select $view -count 1 parent $parent name $tail]
 		if { $row != "" } {
 		    set v::cache($db,$parent,$tail) $row
-		} else { 
+		} else {
 		    vfs::filesystem posixerror $::vfs::posix(ENOENT)
 		}
 	    }
 	}
- 
+
         if {![string length $arr]} {
             # The caller doesn't need more detailed information.
             return 1
         }
- 
+
 	set cur $view!$row
 
 	upvar 1 $arr sb
@@ -535,7 +535,7 @@ namespace eval mk4vfs {
 	}
 
 	# Match directories
-	set parent [mk::cursor position sb(ino)] 
+	set parent [mk::cursor position sb(ino)]
 	foreach row [mk::select $sb(view) parent $parent -glob name $pat] {
 	    set hits([mk::get $sb(view)!$row name]) 1
 	}
@@ -587,7 +587,7 @@ namespace eval mk4vfs {
 	    }
 	    array unset v::cache \
 		    "$db,[mk::get $sb(ino) parent],[file tail $path]"
-	    
+
 	    # flag with -99, because parent -1 is not reserved for the root dir
 	    # deleted entries never get re-used, should be cleaned up one day
 	    mk::set $sb(ino) parent -99 name ""

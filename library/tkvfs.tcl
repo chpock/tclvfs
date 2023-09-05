@@ -105,7 +105,7 @@ proc vfs::tk::matchindirectory {widg path actualpath pattern type} {
     }
     if {$wp == ""} { set wpp "." } else { set wpp $wp }
     set l [string length $wp]
-    
+
     if {$type == 0} {
 	foreach ch [winfo children $wpp] {
 	    if {[string match $pattern [string range $ch $l end]]} {
@@ -150,14 +150,14 @@ proc vfs::tk::matchindirectory {widg path actualpath pattern type} {
 	    }
 	}
     }
-    
+
     set realres [list]
     set l [expr {1 + [string length $wp]}]
     foreach r $res {
 	lappend realres [file join ${actualpath} [string range $r $l end]]
     }
     #::vfs::log $realres
-    
+
     return $realres
 }
 

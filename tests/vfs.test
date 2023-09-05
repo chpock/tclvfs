@@ -10,7 +10,7 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
 
-if {[lsearch [namespace children] ::tcltest] == -1} {
+if {[lsearch [namespace children] ::tcltest] < 0} {
     package require tcltest
     namespace import ::tcltest::*
 }
@@ -21,7 +21,7 @@ proc filelistrelative {filelist {remove ""}} {
     if {[llength $remove]} {
 	set newlist {}
 	foreach f $filelist {
-	    if {[lsearch -exact $remove $f] == -1} {
+	    if {[lsearch -exact $remove $f] < 0} {
 		lappend newlist $f
 	    }
 	}
@@ -116,7 +116,7 @@ test vfs-3.1 {vfs helpers: in memory channels} {
     # probably many other tests will fail too.  In particular
     # any use of 'open', 'source', 'load', and usually also
     # 'file copy', 'file rename' in a vfs will fail.
-    # 
+    #
     # What this means is that tclvfs can't find some other
     # extension/code it requires -- you may need to install
     # the Memchan or Rchan extension for example.
@@ -125,7 +125,7 @@ test vfs-3.1 {vfs helpers: in memory channels} {
 test vfs-3.2 {vfs helpers: crc} {
     # If this test fails, probably many other tests will fail too (at
     # least anything to do with 'zip' vfs).
-    # 
+    #
     # What this means is that tclvfs can't find some other
     # extension/code it requires -- you may need to install
     # the Trf extension for example.
@@ -135,7 +135,7 @@ test vfs-3.2 {vfs helpers: crc} {
 test vfs-3.3 {vfs helpers: zip} {
     # If this test fails, probably many other tests will fail too (at
     # least anything to do with 'zip' vfs).
-    # 
+    #
     # What this means is that tclvfs can't find some other
     # extension/code it requires -- you may need to install
     # the Try extension for example.
@@ -145,7 +145,7 @@ test vfs-3.3 {vfs helpers: zip} {
 test vfs-3.4 {vfs helpers: zip} {
     # If this test fails, probably many other tests will fail too (at
     # least anything to do with 'zip' vfs).
-    # 
+    #
     # What this means is that tclvfs can't find some other
     # extension/code it requires -- you may need to install
     # the Try extension for example.

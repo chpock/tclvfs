@@ -266,7 +266,7 @@ a stat structure. The order of the keys in the list is not important.
 
 [nl]
 
-Given this the subcommand should use something like 
+Given this the subcommand should use something like
 
 [example {return [list dev 0 type file mtime 1234 ...].}]
 

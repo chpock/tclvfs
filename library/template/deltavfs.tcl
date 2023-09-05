@@ -9,10 +9,10 @@ Version 1.5.2
 
 A delta virtual filesystem.  Requires the template vfs in templatevfs.tcl.
 
-Mount the delta vfs first, then mount the versioning vfs using the virtual location created by the 
+Mount the delta vfs first, then mount the versioning vfs using the virtual location created by the
 delta vfs as its existing directory.
 
-As the versioning filesystem generates a new separate file for every file edit, this filesystem will 
+As the versioning filesystem generates a new separate file for every file edit, this filesystem will
 invisibly generate and manage deltas of the separate versions to save space.
 
 
@@ -117,7 +117,7 @@ proc file_stat {file array} {
 	set size $fileStats(size)
 	file stat $fileName fs
 	set fs(size) $size
-	return 
+	return
 }
 proc file_writable {file} {
 	set file [GetFileName $file]
@@ -215,7 +215,7 @@ proc Delta {filename} {
 		if [info exists fileAttributes(-permissions)] {catch {file attributes $fileName -permissions rw-rw-rw-}}
 		catch {file attributes $fileName -owner $fileStats(uid)}
 		catch {file attributes $fileName -group $fileStats(gid)}
-		
+
 		catch {file mtime $fileName $fileStats(mtime)}
 		catch {file atime $fileName $fileStats(atime)}
 
@@ -236,7 +236,7 @@ proc Delta {filename} {
 
 proc GetFileName {file} {
 	set isdir 0
-	if {([string first \; $file] == -1) && ![set isdir [file isdirectory $file]]} {return {}}
+	if {([string first \; $file] < 0) && ![set isdir [file isdirectory $file]]} {return {}}
 	if $isdir {return $file}
 	set fileNames [glob -nocomplain -path $file *]
 	if {[lindex [file system $file] 0] != "tclvfs"} {append fileNames " [glob -nocomplain -path $file -type hidden *]"}

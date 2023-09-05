@@ -22,7 +22,7 @@ appended to filtercmd and the result will be evaluated.  The evaluation should r
 switches - The switches will "prefilter" the results before the filtercmd is applied.  The
 available switches are:
 
-	-depth   - sets the number of levels down from the basedir into which the 
+	-depth   - sets the number of levels down from the basedir into which the
 		     filesystem hierarchy will be searched. A value of zero is interpreted
 		     as infinite depth.
 
@@ -34,19 +34,19 @@ available switches are:
 Side effects:
 
 If somewhere within the search space a directory is a link to another directory within
-the search space, then the variable ::fileutil::globfind::REDUNDANCY will be set to 1 
+the search space, then the variable ::fileutil::globfind::REDUNDANCY will be set to 1
 (otherwise it will be set to 0).  The name of the redundant directory will be appended to the
-variable ::fileutil::globfind::redundant_files.  This information may be used to help track down 
+variable ::fileutil::globfind::redundant_files.  This information may be used to help track down
 and eliminate infinitely looping links in the search space.
 
 Unlike fileutil::find, the name of the basedir will be included in the results if it fits
-the prefilter and filtercmd criteria (thus emulating the behavior of the standard Unix 
+the prefilter and filtercmd criteria (thus emulating the behavior of the standard Unix
 GNU find utility).
 
 ----
 
-globfind is designed as a fast and simple alternative to fileutil::find.  It takes 
-advantage of glob's ability to use multiple patterns to scan deeply into a directory 
+globfind is designed as a fast and simple alternative to fileutil::find.  It takes
+advantage of glob's ability to use multiple patterns to scan deeply into a directory
 structure in a single command, hence the name.
 
 It reports symbolic links along with other files by default, but checks for nesting of
@@ -59,8 +59,8 @@ features of the glob command in those versions will result in slower performance
 globfind is generally two to three times faster than fileutil::find, and fractionally
 faster than perl's File::Find function for comparable searches.
 
-The filtercmd may be omitted if only prefiltering is desired; in this case it may be a 
-bit faster to use the proc globtraverse, which uses the same basedir value and 
+The filtercmd may be omitted if only prefiltering is desired; in this case it may be a
+bit faster to use the proc globtraverse, which uses the same basedir value and
 command-line switches as globfind, but does not take a filtercmd value.
 
 If one wanted to search for pdf files for example, one could use the command:
@@ -86,8 +86,8 @@ proc globfind {{basedir .} {filtercmd {}} args} {
 	set types {}
 	set basedir [file normalize $basedir]
 
-	# account for possibility that filtercmd is missing by 
-	# reformatting $args variable: 
+	# account for possibility that filtercmd is missing by
+	# reformatting $args variable:
 	set args [concat [list $filtercmd] $args]
 	if [expr fmod([llength $args],2)] {
 		set filtercmd [lindex $args 0]
@@ -134,7 +134,7 @@ proc globfind {{basedir .} {filtercmd {}} args} {
 
 	# get hidden files if no specific types requested:
 	if {$types == {}} {
-		
+
 		# save redundant file values already gathered:
 		set redundant_files {}
 		if [set REDUNDANCY $[namespace current]::REDUNDANCY] {
@@ -294,7 +294,7 @@ proc globtraverse {{basedir .} args} {
 		while {$i < $contentLength} {
 			set item [lindex $contents end-$i]
 			incr i
-			
+
 			# kludge to fully resolve link to native name:
 			set linkValue [file dirname [file normalize [file join $item __dummy__]]]
 
@@ -305,12 +305,12 @@ proc globtraverse {{basedir .} args} {
 				continue
 			}
 
-			lappend checkDirs $item			
+			lappend checkDirs $item
 		}
 
 		# remove current search dir from search list to prime for next iteration:
 		set checkDirs [lrange $checkDirs 1 end]
-	}	
+	}
 	return $resultList
 }
 
@@ -419,7 +419,7 @@ proc scfind {args} {
 
 # find: example use of globfind and scfind to duplicate a subset of the
 # command line interface of GNU find.
-# ex: 
+# ex:
 #	find $env(HOME) -type l -atime +1
 
 proc find {args} {
@@ -484,7 +484,7 @@ proc globsync {destructive log source target file} {
 	if !$destructive {set targetDirs {}}
 	foreach td $targetDirs {
 		set sd [file join $source [join [lrange [file split $td] $targetLength end] /]]
-		if {[lsearch $sourceDirs $sd] < 0} {	
+		if {[lsearch $sourceDirs $sd] < 0} {
 			file delete -force -- $td
 			if $log {puts "deleted directory $td"}
 
@@ -492,7 +492,7 @@ proc globsync {destructive log source target file} {
 	}
 	set sourceFiles [glob -dir $file -nocomplain -types {b c f l p s} *]
 	if {[lindex [file system $file] 0] != "tclvfs"} {append sourceFiles " [glob -dir $file -nocomplain -types {b c f l p s hidden} *]"}
-		
+
 	set targetFiles {}
 	if $destructive {
 		set targetFiles [glob -dir $targetFile -nocomplain -types {b c f l p s} *]
@@ -503,7 +503,7 @@ proc globsync {destructive log source target file} {
 		if {[lsearch $sourceFiles $sf] < 0} {
 			file delete -force -- $tf
 			if $log {puts "deleted file $tf"}
-		}	
+		}
 	}
 	return 0
 }

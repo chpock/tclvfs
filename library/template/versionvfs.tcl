@@ -28,11 +28,11 @@ maximum number of previous versions of a file to keep per project.
 
 -project
 a list of one or more version-identifying tags.  Any file created or edited in the virtual file space
-will be given these tags.  File versions with a tag matching the ones given here will be visible in 
+will be given these tags.  File versions with a tag matching the ones given here will be visible in
 preference to other, possibly later versions without the tag.
 
-If a file version has project tags but none of them is included in this project tag list, it will be 
-invisible; the file itself will then be invisible unless a file version exists without any 
+If a file version has project tags but none of them is included in this project tag list, it will be
+invisible; the file itself will then be invisible unless a file version exists without any
 project tags, in which case it will be treated as the default.
 
 In cases where several file versions each have multiple tags that match in the project
@@ -50,21 +50,21 @@ default latest version.  Version choices based on project tags will still be mad
 versions later than the timestamp will be ignored in the decision process.
 
 
-The values of each option can be changed dynamically after mount by using the "file attributes" 
-command on the mount virtual directory. Each option is editable as an attribute; 
-i.e., "file attributes C:/version -project {version2 release}".  Display of visible files will 
+The values of each option can be changed dynamically after mount by using the "file attributes"
+command on the mount virtual directory. Each option is editable as an attribute;
+i.e., "file attributes C:/version -project {version2 release}".  Display of visible files will
 change dynamically based on decisions with new attribute values.
 
-In addition, new attributes are defined which can be queried for individual files:  
+In addition, new attributes are defined which can be queried for individual files:
 
-The command "file attributes $file -version_filename" will show the exact filename of the 
-currently visible version of the given file as it is stored in the vfs, complete with 
+The command "file attributes $file -version_filename" will show the exact filename of the
+currently visible version of the given file as it is stored in the vfs, complete with
 timestamp and project tags if any.
 
 The command "file attributes $file -versions" will return a list containing information on
-all stored versions of the given file.  Each element of the list is itself a three-element 
+all stored versions of the given file.  Each element of the list is itself a three-element
 list: 1) the unique millisecond-level timestamp of the version, 2) a human-readable date string
-showing the time represented by the timestamp (can be used a a value for the -time attribute), 
+showing the time represented by the timestamp (can be used a a value for the -time attribute),
 and 3) a list of the project tags attached to the version, if any.
 
 The versioning vfs inherits the -cache and -volume options of the template vfs.
@@ -123,7 +123,7 @@ proc close_ {channelID} {
 
 	return
 }
-proc file_atime {file time} {	
+proc file_atime {file time} {
 	upvar path path root root relative relative
 # check if current version is latest, if not disallow edit:
 	set latest [lindex [lindex [lsort [VersionsAll $path $relative]] end] 0]
@@ -288,7 +288,7 @@ proc glob_ {directory dir nocomplain tails types typeString dashes pattern} {
 	return $newGlobList
 }
 proc open_ {file mode} {
-	upvar path path root root relative relative 
+	upvar path path root root relative relative
 	set fileName [VAcquireFile $path $root $relative]
 	if {$mode == "r"} {return [open $fileName r]}
 	set hash {}
@@ -389,7 +389,7 @@ proc globdelete {file} {
 	if {[lsearch $deleted $file] > -1} {return}
 	lappend deleted $file
 	set fileName $file\;[VCreateTag $root]
-	set fileName [split $fileName \;] 
+	set fileName [split $fileName \;]
 	set fileName [linsert $fileName 2 "deleted"]
 	set fileName [join $fileName \;]
 	close [open $fileName w]
@@ -465,7 +465,7 @@ proc VAcquireFile {path root relative {actualpath {}}} {
 # if project attribute is set, and version has project tags, ensure version belongs to one of the set projects,
 # otherwise it will be invisible:
 	if $checkProject {
-		if {([lindex [split $fileName \;] 2] == "deleted") && ([lsearch $projects "deleted"] == -1)} {return [file join $path $relative]}
+		if {([lindex [split $fileName \;] 2] == "deleted") && ([lsearch $projects "deleted"] < 0)} {return [file join $path $relative]}
 		set projectMember 0
 		set tags [lrange [split $fileName \;] 1 end]
 		if {[lindex $tags 1] == "deleted"} {set tags [lreplace $tags 1 1]}
@@ -523,7 +523,7 @@ proc VersionsAll {path relative} {
 	return $newVersions
 }
 
-# specialized command for lsort, decide which of two versions is preferred given 
+# specialized command for lsort, decide which of two versions is preferred given
 # project and time settings:
 proc VersionSort {element1 element2} {
 	set root [file dirname $element1]
@@ -573,7 +573,7 @@ proc VersionSort {element1 element2} {
 		if {$tagEnd1 == "deleted"} {set tagEnd1 [lindex [split $element1 \;] 3]}
 		set tagEnd2 [lindex [split $element2 \;] 2]
 		if {$tagEnd2 == "deleted"} {set tagEnd2 [lindex [split $element2 \;] 3]}
-	
+
 		# set version with no project tags as default choice:
 		if {($tagEnd1 == {}) && !($tagEnd2 == {})} {set returnValue -1}
 		if {!($tagEnd1 == {}) && ($tagEnd2 == {})} {set returnValue 1}
@@ -585,7 +585,7 @@ proc VersionSort {element1 element2} {
 	return $returnValue
 }
 
-# ampersand and semicolon are privileged chars in tagging, 
+# ampersand and semicolon are privileged chars in tagging,
 # encode and decode filenames containing them:
 proc VFileNameEncode {filename} {
 	set filename [file dirname $filename]/[string map {& &a} [file tail $filename]]

@@ -17,7 +17,7 @@ can do things like:
 
     file copy ftp://ftp.foo.com/pub/readme.txt .
 
-With 'Tkhtml' and this extension, writing a web-browser in Tcl should be 
+With 'Tkhtml' and this extension, writing a web-browser in Tcl should be
 pretty trivial.
 
 None of the vfs's included are 100% complete or optimal yet, so if only for
@@ -53,24 +53,24 @@ and place it in your Tcl hierarchy, with the necessary shared library inside
 Current implementation
 ----------------------
 
-Some of the provided vfs's require the Memchan extension for any operation 
+Some of the provided vfs's require the Memchan extension for any operation
 which involves opening files.  The zip vfs also require 'Trf' (for its
 'zip' command).
 
 The vfs's currently available are:
 
-package vfs::ftp 1.0 
+package vfs::ftp 1.0
 package vfs::http 0.5
-package vfs::mk4 1.6 
-package vfs::ns 0.5 
+package vfs::mk4 1.6
+package vfs::ns 0.5
 package vfs::tar 0.9
 package vfs::test 1.0
 package vfs::urltype 1.0
 package vfs::webdav 0.1
-package vfs::zip 1.0 
+package vfs::zip 1.0
 
 --------+-----------------------------------------------------------------
-vfs     |  example mount command                       
+vfs     |  example mount command
 --------+-----------------------------------------------------------------
 zip     |  vfs::zip::Mount my.zip local
 ftp     |  vfs::ftp::Mount ftp://user:pass@ftp.foo.com/dir/name/ local
@@ -88,7 +88,7 @@ http    |  vfs::http::Mount http://foo.com/blah local
 --------+-----------------------------------------------------------------
 
 For file-systems which make use of a local file (e.g. mounting zip or mk4
-archives), it is often most simple to have 'local' be the same name as 
+archives), it is often most simple to have 'local' be the same name as
 the archive itself.  The result of this is that Tcl will then see the
 archive as a directory, rather than a file.  Otherwise you might wish
 to create a dummy file/directory called 'local' before mounting.
@@ -96,18 +96,18 @@ to create a dummy file/directory called 'local' before mounting.
 C versus Tcl
 ------------
 
-It may be worth writing a vfs for commonly used formats like 'zip' in C. 
+It may be worth writing a vfs for commonly used formats like 'zip' in C.
 This would make it easier to create single-file executables because with
 this extension we have a bootstrap problem: to mount the executable
 (assuming it has a .zip archive appended to it) we need to have
-'vfs::zip::Mount' and related procedures loaded, but this means that those 
+'vfs::zip::Mount' and related procedures loaded, but this means that those
 procedures would have to be stored in the executable outside the zip
 archive, wasting space.
 
 Note: Richard Hipp has written 'zvfs' which uses the older, less-complete
 vfs support in Tcl 8.3.  It is GNU-licensed, which makes distributing binary
 versions a little more complex.  Also Prowrap contains a similar zip-vfs
-implementation using the same old APIs (it is BSD-licensed).  Either of 
+implementation using the same old APIs (it is BSD-licensed).  Either of
 these can probably be modified to work with the new APIs quite easily.
 
 Helping!
@@ -130,7 +130,7 @@ http://www.atnf.csiro.au/~rgooch/linux/vfs.txt
 
 for some ideas.  It would be good to accumulate ideas on the limitations of
 the current VFS support so we can plan out what vfs 2.0 will look like (and
-what changes will be needed in Tcl's core to support it).  
+what changes will be needed in Tcl's core to support it).
 
 "Asynchronicity" -- Obvious things which come to mind are asynchronicity:
 'file copy' from a mounted remote site (ftp or http) is going to be very

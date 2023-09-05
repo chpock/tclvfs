@@ -10,11 +10,11 @@ fishvfs.tcl --
 	http://mini.net/tcl/12792
  but it utilizes the same concept of turning any computer that offers
  access via ssh, rsh or similar shell into a file server.
- 
+
 	Written by Stephen Huntley (stephen.huntley@alum.mit.edu)
 	License: Tcl license
 	Version 1.5.2
- 
+
  Usage: mount ?-volume? \
  	?-cache <number>? \		# cache retention seconds
  	?-exec? \				# location of executable
@@ -26,12 +26,12 @@ fishvfs.tcl --
 	?<option> <value>?
  	<remote directory> \		# an existing directory on the remote filesystem
  	<virtual mount directory or URL>
- 
+
 Options:
 
 -cache
 Sets number of seconds file information will dwell in cache after being retrieved.
-Default is 2.  This value is viewable and editable after mount by calling 
+Default is 2.  This value is viewable and editable after mount by calling
 "file attributes <virtual directory> -cache ?value?"
 
 -volume
@@ -49,7 +49,7 @@ formatting proc.
 The ssh option assumes rsa login protocol is set up so no interactive password entry
 is necessary.
 
--user 
+-user
 Login name at remote computer if necessary.
 
 -password
@@ -61,46 +61,46 @@ Hostname of remote computer.  Only necessary if not specified in virtual mount U
 -port
 Override default port if necessary.
 
-Arbitrary option/value pairs can be included in the command line; they may be useful if 
+Arbitrary option/value pairs can be included in the command line; they may be useful if
 a custom new transport protocol handler is added which requires info not included in the
 provided set.
 
-The vfs can be mounted as a local directory, or as a URL in conjunction with 
+The vfs can be mounted as a local directory, or as a URL in conjunction with
 the "-volume" option.
- 
+
 The URL can be of the form:
- 
+
 transport://[user[:password]@]host[:port][/filename]
- 
-Option switches can be used in conjunction with a URL to specify connection 
+
+Option switches can be used in conjunction with a URL to specify connection
 information; the option switch values will override the URL values.
 
 
 Examples:
- 
+
  mount -transport ssh -user root -host tcl.tk / /mnt/vfs/tcl
- 
+
  mount -volume /home/foo rsh://foo@localcomp
- 
+
  mount -volume -password foopass /home/foo plink://foo@bar.org:2323/remotemount
- 
+
  mount -cache 60 -transport plink -user foo -password foopass -host bar.org /home/foo C:/Tcl/mount/foo
- 
+
 
 Client configuration:
- 
+
  If the -exec option is not used, the shell client must be in the PATH; it must be
  configured for non-interactive (no password prompt) use.
- 
- The value of the -transport option is used to load an appropriate handler 
+
+ The value of the -transport option is used to load an appropriate handler
  procedure which is called to handle the specifics of the particular client.
  Handlers for the supported transports (ssh, rsh, plink) already exist.
  New clients can be added simply by providing a suitable handler procedure.
- 
+
  server configuration:
- 
- The remote computer is assumed to be running an SSH server, have a sh-type shell and 
- the standard GNU fileutils, but otherwise no configuration is needed. 
+
+ The remote computer is assumed to be running an SSH server, have a sh-type shell and
+ the standard GNU fileutils, but otherwise no configuration is needed.
 
 ########################
 }
@@ -189,18 +189,18 @@ proc file_attributes {file {attribute {}} args} {
 }
 
 proc file_delete {file} {
-	upvar root root			
+	upvar root root
 	set command "rm -rf '$file'"
 	Transport $root $command
 }
-proc file_executable {file} {	
+proc file_executable {file} {
 	file_access $file executable
 }
 proc file_exists {file} {
 	file_access $file exists
 }
 proc file_mkdir {file} {
-	upvar root root			
+	upvar root root
 	set  command "mkdir -p '$file'"
 	Transport $root $command
 }
@@ -295,7 +295,7 @@ proc glob_ {d directory nocomplain tails types typeString dashes pattern} {
 # loop through file list and cache stat info:
 	foreach rV [split $returnValue \n] {
 		if [string equal $rV "/"] {set dir 0 ; continue}
-	
+
 		set fileTail [lindex $rV end]
 		set fN [file join $virtualName $fileTail]
 
@@ -404,10 +404,10 @@ proc MountProcedure {args} {
 	set ::vfs::template::fish::transport($to) $params(transport)
 
 # rewrite template vfshandler so appropriate transport proc is imported with each file operation:
-	set body "set trans \$::vfs::template::fish::transport(\$root) \; namespace import -force ::vfs::template::fish::\$\{trans\}::Transport \n"	
+	set body "set trans \$::vfs::template::fish::transport(\$root) \; namespace import -force ::vfs::template::fish::\$\{trans\}::Transport \n"
 	append body [info body handler]
 	proc handler [info args handler] $body
-	
+
 	lappend pathto $path
 	lappend pathto $to
 	return $pathto
@@ -448,14 +448,14 @@ proc FileTransport {filename} {
 
 	set filename $filename/f
 	set transport {} ; set user {} ; set password {} ; set host {} ; set port {}
-	
+
 	regexp {(^[^:]+)://} $filename trash transport
 	regsub {(^[^:]+://)} $filename "" userpasshost
 	set userpass [lindex [split $userpasshost @] 0]
 	set user $userpass
 	regexp {(^[^:]+):(.+)$} $userpass trash user password
 
-	if {[string first @ $userpasshost] == -1} {set user {} ; set password {}}
+	if {[string first @ $userpasshost] < 0} {set user {} ; set password {}}
 
 	regsub {([^/]+)(:[^/]+)(@[^/]+)} $filename \\1\\3 filename
 

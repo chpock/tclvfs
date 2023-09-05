@@ -11,7 +11,7 @@
 # ...
 #
 # Or all in one go:
-# 
+#
 # % file copy ftp://ftp.ucsd.edu/pub/alpha/Readme .
 
 package provide vfs::urltype 1.0
@@ -105,10 +105,10 @@ proc vfs::urltype::matchindirectory {type root path actualpath pattern types} {
     if {![string length $pattern]} {
 	return foo
     }
-    
+
     set res [list]
     set len [string length $root]
-    
+
     foreach m [::vfs::filesystem info] {
 	if {[string equal [string range $m 0 [expr {$len -1}]] $root]} {
 	    set rest [string range $m $len end]

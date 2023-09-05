@@ -13,15 +13,15 @@ Collate: reads from multiple specified directories and presents the results as o
 
 Broadcast: applies all writes in the mount location to multiple specified directories.
 
-Collect: copies any file read from or written to any of the above locations to specified directories. 
+Collect: copies any file read from or written to any of the above locations to specified directories.
 
-Catchup: If any specified directory is not available during any write action, the action is recorded in 
-a catchup queue.  With each subsequent write action, the queue is examined, and if any directory has 
+Catchup: If any specified directory is not available during any write action, the action is recorded in
+a catchup queue.  With each subsequent write action, the queue is examined, and if any directory has
 become available, the action is performed, allowing offline directories to "catch up."
 
 Usage: mount ?-read <directories> -write <directories> -collect <directories> -catchup <directories>? <virtual directory>
 
-Each pathname in <directories> is meant to stand individually, the <directories> symbol is not meant to indicate a 
+Each pathname in <directories> is meant to stand individually, the <directories> symbol is not meant to indicate a
 Tcl list.  The sets of specified locations are independent; they can overlap or not as desired.  Note each
 option flag is optional, one could for example use only the -read flag to create a read-only directory.  Directories
 do not have to exist and may go missing after mount, non-reachable locations will be ignored.
@@ -29,27 +29,27 @@ do not have to exist and may go missing after mount, non-reachable locations wil
 Options:
 
 -read
-When an individual file is opened for reading, each of the directories specified is searched in 
-order for the file; the first file found with the appropriate name is opened.  When a subdirectory listing is 
+When an individual file is opened for reading, each of the directories specified is searched in
+order for the file; the first file found with the appropriate name is opened.  When a subdirectory listing is
 generated, the combined files of the corresponding subdirectory of all specified directories are listed together.
 
 -write
-When an individual file is opened for writing, each of the directories specified is searched in 
-order for the file; the first file found with the appropriate name is opened.  If the file doesn't exist, 
-it is created in the first specified write location.  When the file is closed, a copy of it is distributed to 
+When an individual file is opened for writing, each of the directories specified is searched in
+order for the file; the first file found with the appropriate name is opened.  If the file doesn't exist,
+it is created in the first specified write location.  When the file is closed, a copy of it is distributed to
 each specified write directory.
 
 -collect
-Auto-generates one or more file caches; a copy of any file opened for reading or writing in any of the above 
-specified directories is made to each directory specified with the -collect flag.  Collect locations are 
-not included in file or directory listings, and are not searched for read access; so in order to make an 
+Auto-generates one or more file caches; a copy of any file opened for reading or writing in any of the above
+specified directories is made to each directory specified with the -collect flag.  Collect locations are
+not included in file or directory listings, and are not searched for read access; so in order to make an
 active read cache, for example, one would have to include one directory location in both the -read and -collect sets.
 
 -catchup
 If this flag is included, the catchup function is activated, and a copy of the catchup queue is stored in a
 file in each of the specified directories.  File writes, directory creations and file/directory deletes are
-stored in the catchup queue if any write location is offline; at the next write/creation/delete the queue is 
-examined, and if any skipped action can be completed due to a location becoming available again, it 
+stored in the catchup queue if any write location is offline; at the next write/creation/delete the queue is
+examined, and if any skipped action can be completed due to a location becoming available again, it
 will be.  A catchup attempt will be made at mount time if this flag is included.
 
 The values of each option can be changed dynamically after mount by using the "file attributes" command on the
@@ -60,14 +60,14 @@ The collate vfs inherits the -cache and -volume options of the template vfs.
 
 Example use: specify parallel locations on a hard drive, on a CD-ROM mount and an ftp vfs as the read list.
 Files will be read first from the hard drive, if not found there the CD-ROM and ftp site will be searched in turn.
-The hard drive can be specified as the single write location, and no writes to the CD-ROM or 
+The hard drive can be specified as the single write location, and no writes to the CD-ROM or
 ftp site will ever be attempted:
 
 mount -read C:/install/package/docs CDROM:/package/docs FTP:/pub/releases/package/docs -write C:/install/package/docs C:/collate/docs
 
 
-Example collect location use: specify a single hard drive location as a read and collect directory.  
-Specify a ftp vfs as a secondary read directory.  As ftp files are downloaded they are copied to the 
+Example collect location use: specify a single hard drive location as a read and collect directory.
+Specify a ftp vfs as a secondary read directory.  As ftp files are downloaded they are copied to the
 collect directory; the local copies are accessed first on subsequent reads: hence the collect
 specification produces a self-generating local cache:
 
@@ -210,7 +210,7 @@ proc open_ {file mode} {
 		file mkdir [file dirname $wfile]
 		if ![catch {set file [AcquireFile $root $relative]}] {
 			if {$wfile != $file} {file copy -force -- $file $wfile}
-		} 
+		}
 		return [open $wfile $mode]
 	}
 }
@@ -305,7 +305,7 @@ proc WriteFile {root relative action} {
 			continue
 		}
 		set rvfile [file join $path $relative]
-		if {[lsearch $returnValue $rvfile] == -1} {lappend returnValue $rvfile}
+		if {[lsearch $returnValue $rvfile] < 0} {lappend returnValue $rvfile}
 	}
 	if {$returnValue == {}} {vfs::filesystem posixerror $::vfs::posix(EROFS) ; return -code error $::vfs::posix(EROFS)}
 	if $catchupActivate {
