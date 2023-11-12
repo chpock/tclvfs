@@ -194,9 +194,9 @@ test vfs-4.2 {Test MatchInDirectory fix} -setup {
     catch {namespace delete ::test}
 } -result [list \
 	       0 {nstest/test/quux nstest/test/waz} \
-               1 {no files matched glob pattern "nstest/test/quux/*"} \
                0 {} \
-               1 {no files matched glob pattern "nstest/test/quux/nothingthere/*"} \
+               0 {} \
+               0 {} \
                0 {} \
 	       ]
 

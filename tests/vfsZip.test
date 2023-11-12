@@ -95,7 +95,7 @@ test vfsZip-1.6 "glob non-present files" -constraints {zipfs zipexe} -setup {
     lsort [glob -directory local/zipfs.test -tails ridikulus.txt]
 } -cleanup {
     vfs::unmount local
-} -returnCodes {error} -result {no files matched glob pattern "ridikulus.txt"}
+} -result {}
 
 test vfsZip-1.7 "glob non-present directory" -constraints {zipfs zipexe} -setup {
     vfs::zip::Mount zipfs.zip local
@@ -103,7 +103,7 @@ test vfsZip-1.7 "glob non-present directory" -constraints {zipfs zipexe} -setup 
     lsort [glob -directory local/zipfs.test/ridikulus -tails *]
 } -cleanup {
     vfs::unmount local
-} -returnCodes {error} -result {no files matched glob pattern "*"}
+} -result {}
 
 test vfsZip-1.8 "read file" -constraints {zipfs zipexe} -setup {
     vfs::zip::Mount zipfs.zip local

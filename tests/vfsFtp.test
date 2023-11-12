@@ -17,11 +17,15 @@ if {[lsearch [namespace children] ::tcltest] < 0} {
     namespace import ::tcltest::*
 }
 
-testConstraint ftp [expr {![catch {package require vfs::ftp}]}]
+testConstraint ftp [expr {![catch {package require vfs::ftp}]
+			  &&
+			  [clock format [clock seconds] -format %Y] < 2019}]
 
 if {[testConstraint ftp]} {
     puts stdout "These tests require an internet connection, and might"
     puts stdout "take a long time to complete."
+} elseif {[clock format [clock seconds] -format %Y] >= 2019} {
+    puts stdout "It's [clock format [clock seconds] -format %Y]. FTP is dead."
 }
 
 test vfsFtp-1.1 {mount and cd} -constraints {ftp} -setup {

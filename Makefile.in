@@ -93,6 +93,7 @@ top_builddir	= .
 
 INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+INSTALL_DATA_DIR= @INSTALL_DATA_DIR@
 INSTALL_DATA	= @INSTALL_DATA@
 INSTALL_SCRIPT	= @INSTALL_SCRIPT@
 
@@ -381,6 +382,68 @@ uninstall-binaries:
 	list='$(bin_BINARIES)'; for p in $$list; do \
 	  rm -f $(DESTDIR)$(bindir)/$$p; \
 	done
+
+$(srcdir)/manifest.uuid:
+	printf "git-" >$(srcdir)/manifest.uuid
+	(cd $(srcdir); git rev-parse HEAD >>$(srcdir)/manifest.uuid || \
+	    (printf "svn-r" >$(srcdir)/manifest.uuid ; \
+	    svn info --show-item last-changed-revision >>$(srcdir)/manifest.uuid) || \
+	    printf "unknown" >$(srcdir)/manifest.uuid)
+
+tclvfsUuid.h: $(srcdir)/manifest.uuid
+	echo "#define TCLVFS_VERSION_UUID \\" >$@
+	cat $(srcdir)/manifest.uuid >>$@
+	echo "" >>$@
+
+#========================================================================
+# Distribution creation
+# You may need to tweak this target to make it work correctly.
+#========================================================================
+
+COMPRESS	= tar zcvf $(PKG_DIR).tar.gz $(PKG_DIR)
+DIST_ROOT	= /tmp/dist
+DIST_DIR	= $(DIST_ROOT)/$(PKG_DIR)
+
+DIST_INSTALL_DATA	= CPPROG='cp -p' $(INSTALL) -m 644
+DIST_INSTALL_SCRIPT	= CPPROG='cp -p' $(INSTALL) -m 755
+
+dist-clean:
+	rm -rf $(DIST_DIR) $(DIST_ROOT)/$(PKG_DIR).tar.*
+
+dist: dist-clean $(srcdir)/manifest.uuid
+	$(INSTALL_DATA_DIR) $(DIST_DIR)
+	$(DIST_INSTALL_DATA) $(srcdir)/license.terms \
+		$(srcdir)/manifest.uuid \
+		$(srcdir)/ChangeLog $(srcdir)/README.cygwin \
+		$(srcdir)/Readme.txt $(srcdir)/DESCRIPTION.txt \
+		$(srcdir)/aclocal.m4 $(srcdir)/configure.ac \
+		$(srcdir)/Makefile.in $(srcdir)/pkgIndex.tcl.in \
+		$(srcdir)/make55.tcl \
+		$(DIST_DIR)/
+	$(DIST_INSTALL_SCRIPT) $(srcdir)/configure $(DIST_DIR)/
+
+	$(INSTALL_DATA_DIR) $(DIST_DIR)/tclconfig
+	$(DIST_INSTALL_DATA) $(srcdir)/tclconfig/README.txt \
+		$(srcdir)/tclconfig/tcl.m4 $(srcdir)/tclconfig/install-sh \
+		$(DIST_DIR)/tclconfig/
+
+	$(INSTALL_DATA_DIR) $(DIST_DIR)/win
+	$(DIST_INSTALL_DATA) $(srcdir)/win/tclvfs.rc \
+		$(srcdir)/win/*.vc $(srcdir)/win/nmakehlp.c \
+		$(DIST_DIR)/win
+
+
+	list='tests doc examples generic http2.6 library library/template';\
+	for p in $$list; do \
+	    if test -d $(srcdir)/$$p ; then \
+		$(INSTALL_DATA_DIR) $(DIST_DIR)/$$p; \
+		$(DIST_INSTALL_DATA) $(srcdir)/$$p/*.* $(DIST_DIR)/$$p/; \
+	    fi; \
+	done
+
+	(cd $(DIST_ROOT); $(COMPRESS);)
+
+#--end-dist--
 
 .PHONY: all binaries clean depend distclean doc install libraries test
 
