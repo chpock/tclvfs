@@ -27,7 +27,7 @@
 #	default -useragent.
 # 2.6.9 Merged fix for zlib crc check on 64bit systems.
 
-package require Tcl 8.4
+package require Tcl 8.4-
 # keep this in sync with pkgIndex.tcl
 package provide http 2.6.9
 

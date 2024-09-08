@@ -14,7 +14,7 @@
 namespace eval ::vfs {
     variable self    [file dirname [info script]]
     variable redir   [info exists ::env(VFS_LIBRARY)]
-    variable corezip [package vsatisfies [package provide Tcl] 8.6]
+    variable corezip [package vsatisfies [package provide Tcl] 8.6-]
 }
 
 if {[lsearch -exact $::auto_path $::vfs::self] == -1} {

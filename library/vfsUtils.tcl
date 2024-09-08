@@ -2,7 +2,7 @@
 #
 # $Id: vfsUtils.tcl,v 1.28 2009/01/22 16:03:58 patthoyts Exp $
 
-package require Tcl 8.4
+package require Tcl 8.4-
 package require vfs
 
 namespace eval ::vfs {

@@ -693,7 +693,7 @@ proc zip::_close {fd} {
 
 # Implementation of stream based decompression for zip
 if {([info commands ::rechan] != "") || ([info commands ::chan] != "")} {
-    if {![catch {package require Tcl 8.6}]} {
+    if {![catch {package require Tcl 8.6-}]} {
 	# implementation using [zlib stream inflate] and [rechan]/[chan create]
 	proc ::zip::zstream_create {fd} {
 	    upvar #0 ::zip::_zstream_zcmd($fd) zcmd

@@ -2,7 +2,7 @@
 # command or the tclkit zlib package with rechan to provide a memory channel
 # and a streaming decompression channel transform.
 
-package require Tcl 8.4; # vfs is all new for 8.4
+package require Tcl 8.4-; # vfs is all new for 8.4
 package provide vfslib 1.4
 
 # use zlib to define zip and crc if available
