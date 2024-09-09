@@ -89,7 +89,7 @@ test vfsZip-1.5 "glob files" -constraints {zipfs zipexe} -setup {
     vfs::unmount local
 } -result {Aleph One.txt Two.txt}
 
-test vfsZip-1.6 "glob non-present files" -constraints {zipfs zipexe} -setup {
+test vfsZip-1.6.1 "glob non-present files" -constraints {zipfs zipexe tcl8} -setup {
     vfs::zip::Mount zipfs.zip local
 } -body {
     lsort [glob -directory local/zipfs.test -tails ridikulus.txt]
@@ -97,13 +97,29 @@ test vfsZip-1.6 "glob non-present files" -constraints {zipfs zipexe} -setup {
     vfs::unmount local
 } -returnCodes {error} -result {no files matched glob pattern "ridikulus.txt"}
 
-test vfsZip-1.7 "glob non-present directory" -constraints {zipfs zipexe} -setup {
+test vfsZip-1.6.2 "glob non-present files" -constraints {zipfs zipexe tcl9} -setup {
+    vfs::zip::Mount zipfs.zip local
+} -body {
+    lsort [glob -directory local/zipfs.test -tails ridikulus.txt]
+} -cleanup {
+    vfs::unmount local
+} -result {}
+
+test vfsZip-1.7.1 "glob non-present directory" -constraints {zipfs zipexe tcl8} -setup {
     vfs::zip::Mount zipfs.zip local
 } -body {
     lsort [glob -directory local/zipfs.test/ridikulus -tails *]
 } -cleanup {
     vfs::unmount local
 } -returnCodes {error} -result {no files matched glob pattern "*"}
+
+test vfsZip-1.7.2 "glob non-present directory" -constraints {zipfs zipexe tcl9} -setup {
+    vfs::zip::Mount zipfs.zip local
+} -body {
+    lsort [glob -directory local/zipfs.test/ridikulus -tails *]
+} -cleanup {
+    vfs::unmount local
+} -result {}
 
 test vfsZip-1.8 "read file" -constraints {zipfs zipexe} -setup {
     vfs::zip::Mount zipfs.zip local

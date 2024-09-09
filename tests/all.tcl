@@ -6,7 +6,7 @@
 #
 # Copyright (c) 1998-2000 by Scriptics Corporation.
 # All rights reserved.
-# 
+#
 # RCS: @(#) $Id: all.tcl,v 1.3 2008/12/03 02:20:45 hobbs Exp $
 
 set tcltestVersion [package require tcltest]
@@ -51,6 +51,9 @@ if {[llength $::tcltest::matchFiles] > 0} {
 }
 
 tcltest::testConstraint fsIsWritable [expr {1 - [catch {file mkdir isreadonly ; file delete isreadonly}]}]
+
+tcltest::testConstraint tcl9 [expr { $::tcl_version >= 9.0 }]
+tcltest::testConstraint tcl8 [expr { $::tcl_version < 9.0 }]
 
 set timeCmd {clock format [clock seconds]}
 puts stdout "Tests began at [eval $timeCmd]"
