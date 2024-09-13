@@ -21,9 +21,9 @@
  */
 
 /* Required to access the 'stat' structure fields, and TclInExit() */
-#include <tcl.h>
 #include "tclInt.h"
 #include "tclPort.h"
+#include <tcl.h>
 #ifdef HAVE_SYS_STAT_H
 #  include <sys/stat.h>
 #endif
