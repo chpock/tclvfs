@@ -337,11 +337,17 @@ static void            VfsInternalError(Tcl_Interp* interp);
  *----------------------------------------------------------------------
  */
 
+#if TCL_MAJOR_VERSION > 8
+#define MIN_VERSION "9.0"
+#else
+#define MIN_VERSION "8.6"
+#endif
+
 int
 Vfs_Init(interp)
     Tcl_Interp *interp;		/* Interpreter for application. */
 {
-    if (Tcl_InitStubs(interp, "8.4", 0) == NULL) {
+    if (Tcl_InitStubs(interp, MIN_VERSION, 0) == NULL) {
 	return TCL_ERROR;
     }
     if (Tcl_PkgRequire(interp, "Tcl", "8.4-", 0) == NULL) {
